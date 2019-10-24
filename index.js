@@ -8,7 +8,7 @@ const qualificationsRegEx = new RegExp("Qualifications|What are we looking for|W
 //<b>(Qualifications|What are we looking for|What You Bring to the Role|Requirements|Must Haves|Experience)(.*?)<b>
 
 const curDate = new Date();
-const fileStream = fs.createWriteStream("./logs/jobs_" + curDate.toTimeString().slice(0, 8) + ".txt");
+const fileStream = fs.createWriteStream("./logs/jobs_" + curDate.toTimeString().slice(0, 8) + ".json");
 
 let c = new Crawler({
     maxConnections: 10,
@@ -28,7 +28,7 @@ function initSearchResults(error, res, done) {
         let $ = res.$;
         jobCount = $("#searchCountPages").first().text();  // Expected Page 1 of 260 Jobs         
         let totalJobs = RegExp("(\\d*) jobs").exec(jobCount.trim());
-        
+
         // Uncomment the below line to pull all and comment out the for loop below that.  
         // for (let index = 0; index < totalJobs[1]; index = index + 10) {
         for (let index = 0; index < 10; index = index + 10) { // Pulls 10 
