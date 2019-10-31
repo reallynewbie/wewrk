@@ -1,6 +1,16 @@
 const fs = require("fs");
 let Crawler = require("crawler");
 
+// DATABASE
+const mysql = require('mysql');
+
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: "wewrk"
+});
+
 const location = "Edmonton%2C+AB"
 const jobTitle = "developer"
 const qualificationsRegEx = new RegExp("Qualifications|What are we looking for|What You Bring to the Role|Requirements.*?<ul>(.*?)<\/ul>", "g");
@@ -8,7 +18,10 @@ const qualificationsRegEx = new RegExp("Qualifications|What are we looking for|W
 //<b>(Qualifications|What are we looking for|What You Bring to the Role|Requirements|Must Haves|Experience)(.*?)<b>
 
 const curDate = new Date();
-const fileStream = fs.createWriteStream("./logs/jobs_" + curDate.toTimeString().slice(0, 8) + ".json");
+//const fileStream = fs.createWriteStream(".\\logs\\jobs_" + curDate.toTimeString().slice(0, 8) + ".json");
+const fileStream = fs.createWriteStream(".\\logs\\jobs.json");
+
+
 
 let c = new Crawler({
     maxConnections: 10,
@@ -83,6 +96,7 @@ function createJobObject(jobTitle, jobLink) {
                     regex: qualificationsRegEx.test(jobDescription)
                 });
                 fileStream.write(jobObject + ",\n");
+                insertPosting(JSON.parse(jobObject));
 
                 // if (!qualificationsRegEx.test(jobDescription)) {
                 //     let jobObject = jobDescription;
@@ -94,4 +108,14 @@ function createJobObject(jobTitle, jobLink) {
             done();
         }
     }]);
+}
+
+function insertPosting(jobObject) {
+    console.log(jobObject.title);
+    var sql = mysql.format("INSERT INTO postings (title, text, url) VALUES (?, ?, ?)", [jobObject.title, jobObject.description, jobObject.link]);
+    con.connect(function(err) {
+        con.query(sql, function(err, result) {
+            if (err) throw err;
+        });
+    });
 }
