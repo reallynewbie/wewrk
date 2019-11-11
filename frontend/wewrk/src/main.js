@@ -9,5 +9,6 @@ Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 
 new Vue({
+  VueRouter,
   render: h => h(App),
 }).$mount('#app')
