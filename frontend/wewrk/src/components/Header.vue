@@ -1,16 +1,17 @@
 <template>
-  <div class="header">
-    <div class="logoArea">
-      <div class="logoObj">Logo</div>
-      <div class="logoObj">we<em>wrk</em></div>
-    </div>
-
-    <div class="headerlinks">
-      <span><a href="#jobSearch" class="headerlink jobSearch">Job Search</a></span>
-      <span><a href="#myJobs" class="headerlink myJobs"> <span id="heart">&#10084;</span> My Jobs</a></span>
-      <!-- <div class="divider headerlink" /> -->
-      <span><a href="#login" class="headerlink login">Login</a></span>
-    </div>
+  <div>
+    <b-navbar type="dark">
+      <b-navbar-brand href="#">
+        <b-img height="auto" width="130px" src="./assets/wewrk_logo_white.png" />
+      </b-navbar-brand>
+      <b-navbar-nav class="navbaritems">
+        <b-nav-item class="navbaritem">Job Search</b-nav-item>
+        <b-nav-item class="navbaritem">
+          <b-img id="hearticon" height="13px" width="auto" src="./assets/wewrk_icon_heart.png" />My jobs
+        </b-nav-item>
+        <b-nav-item class="navbaritem">Login</b-nav-item>
+      </b-navbar-nav>
+    </b-navbar>
   </div>
 </template>
 
@@ -19,63 +20,34 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
-.header {
-  display: flex;
-  flex-shrink: 0;
-  width: 100%;
-  align-items: center;
-  height: 10%;
+.navbar {
   background-color: #166273;
-  color: #fafafb;
-  justify-content: center;
-  font-family: "Rubik-Bold";
-  font-size: 24px;
-  font-weight: bold;
 }
-a {
-  color: #fafafb;
-  font-size: 18px;
-  font-family: "Rubik-Bold";
-  font-weight: bold;
-  text-decoration: none;
+.navbar-brand {
+  margin-left: 11%;
+  margin-top: 5px;
 }
-
-.spacer {
-  min-width: 20%;
+.navbaritems {
+  margin-left: 50%;
 }
-.headerlinks {
-  width: 67%;
-  display: flex;
-  text-align: right;
-  padding-left: 25%;
-
+.navbaritem {
+  font-size: 15px;
+  font-family: "Rubik";
+  font-weight: 700;
+  margin-right: 1vw;
 }
-.headerlink {
-  padding-right:55px;
+.nav-link {
+  color: #fafafb !important;
 }
 
-.logoArea {
-  width: 35%;
-  display: flex;
-  padding-left: 12%;
+.nav-item {
+  border-bottom: 5px solid transparent;
 }
-.logoObj {
-  padding-right: 10%;
+.nav-item:hover {
+  color: blue !important;
+  border-bottom: 5px solid white;
 }
-.divider {
-  border-left: solid;
-  border-color: white;
-  border-width: 1px;
-
-  margin-left: 3%;
+#hearticon {
+  margin-right: 6px;
 }
-#heart {
-  color: red;
-}
-span{
-  white-space: pre;
-  padding:0;
-  margin:0;
-}
-
 </style>

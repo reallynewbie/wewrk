@@ -1,21 +1,21 @@
 <template>
   <div id="app">
-    <Header id="myHeader"/>
+    <MainContainer id="maincontainer"/>
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
+import MainContainer from "./components/MainContainer";
 
 export default {
   name: 'app',
   components: {
-    Header
+    MainContainer
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
