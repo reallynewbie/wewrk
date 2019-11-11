@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="headerBackground">
     <b-navbar type="dark">
-      <b-navbar-brand href="#">
+      <b-navbar-brand href="#" class="mr-auto">
         <b-img height="auto" width="130px" src="./assets/wewrk_logo_white.png" />
       </b-navbar-brand>
-      <b-navbar-nav class="navbaritems">
-        <b-nav-item class="navbaritem">Job Search</b-nav-item>
-        <b-nav-item class="navbaritem">
+      <b-navbar-nav class="navbaritems ml-auto">
+        <b-nav-item to="/search" class="navbaritem" active-class="active">Job Search</b-nav-item>
+        <b-nav-item to="/dashboard" class="navbaritem" active-class="active">
           <b-img id="hearticon" height="13px" width="auto" src="./assets/wewrk_icon_heart.png" />My jobs
         </b-nav-item>
-        <b-nav-item class="navbaritem">Login</b-nav-item>
+        <b-nav-item class="navbaritem" active-class="active">Login</b-nav-item>
       </b-navbar-nav>
     </b-navbar>
   </div>
@@ -20,15 +20,17 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
-.navbar {
+.headerBackground {
   background-color: #166273;
 }
+.navbar {
+  margin-left: 10%;
+  margin-right: 7%;
+}
 .navbar-brand {
-  margin-left: 11%;
   margin-top: 5px;
 }
 .navbaritems {
-  margin-left: 50%;
 }
 .navbaritem {
   font-size: 15px;
@@ -43,11 +45,10 @@ export default {};
 .nav-item {
   border-bottom: 5px solid transparent;
 }
-.nav-item:hover {
-  color: blue !important;
-  border-bottom: 5px solid white;
-}
 #hearticon {
   margin-right: 6px;
+}
+.active {
+  border-bottom: 5px solid white;
 }
 </style>
