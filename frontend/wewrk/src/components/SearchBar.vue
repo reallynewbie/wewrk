@@ -63,7 +63,7 @@ p {
 }
 
 .formHeader {
-  font-size: 15px;
+  font-size: 16px;
   font-family: "Rubik";
   font-weight: 700;
   text-align: left;
