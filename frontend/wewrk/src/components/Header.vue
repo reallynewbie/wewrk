@@ -1,7 +1,7 @@
 <template>
   <div class="headerBackground" v-bind:class="{transparent: isTransparent}">
     <b-navbar type="dark">
-      <b-navbar-brand href="#" class="mr-auto">
+      <b-navbar-brand href="/" class="mr-auto">
         <b-img height="auto" width="130px" src="./assets/wewrk_logo_white.png" />
       </b-navbar-brand>
       <b-navbar-nav class="navbaritems ml-auto">
