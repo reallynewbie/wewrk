@@ -23,8 +23,10 @@
         </span>
       </h2>
     </div>
+    <div class="br-line" />
     <RecentSearches />
     <AboutUs />
+    <Footer />
   </div>
 </template>
 
@@ -33,10 +35,11 @@ import Header from "../Header";
 import HomeSearchDiv from "./HomeSearchDiv";
 import AboutUs from "./AboutUs";
 import RecentSearches from "./RecentSearches";
+import Footer from "./Footer";
 
 // https://stackoverflow.com/questions/45895146/how-to-put-elements-between-two-divs-css-html
 export default {
-  components: { Header, HomeSearchDiv, AboutUs, RecentSearches}
+  components: { Header, HomeSearchDiv, AboutUs, RecentSearches, Footer}
 };
 </script>
 
@@ -109,5 +112,8 @@ h2 {
   height: 0;
   transform: translateY(-80px);
   margin-left: 11%;
+}
+.br-line {
+  border-bottom: 1px solid whitesmoke;
 }
 </style>
