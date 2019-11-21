@@ -40,14 +40,10 @@ const router = new VueRouter({
     }
   ]
 });
-// import HomePage from "./components/homepage/Homepage";
 
 export default {
   name: "app",
   router,
-  components: {
-    // HomePage
-  }
 };
 </script>
 
