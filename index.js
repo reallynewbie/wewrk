@@ -15,7 +15,7 @@ const pool = mysql.createPool({
 
 var totUnique = 0;
 var totPulled = 0;
-var seenJobs = [];
+//var seenJobs = [];//array for alternate duplicate filtering
 
 //const location = "Edmonton%2C+AB"
 const location = "alberta";
@@ -28,9 +28,7 @@ const curDate = new Date();
 //const fileStream = fs.createWriteStream(".\\logs\\jobs_" + curDate.toTimeString().slice(0, 8) + ".json");
 const fileStream = fs.createWriteStream(".\\logs\\jobs.json");
 
-
-
-let c = new Crawler({//confirm crawler flow
+let c = new Crawler({
     maxConnections: 10,
 });
 
@@ -92,7 +90,7 @@ function createJobObject(jobTitle, jobLink) {
     c.queue([{
         uri: url,
         jQuery: {
-            name: 'cheerio',//?
+            name: 'cheerio',
             options: {
                 normalizeWhitespace: true,
             }
@@ -105,11 +103,17 @@ function createJobObject(jobTitle, jobLink) {
                 console.log('\n--------\nGrabbed', res.body.length, 'bytes');
                 let $ = res.$;
                 let jobDescription = $(".jobsearch-jobDescriptionText").first().html();
-                console.log(typeof(jobDescription));
+                let jobLocation = $(".jobsearch-JobMetadataHeader-iconLabel").first().text();
+                console.log("Location: " + jobLocation);
+                let jobCompany = $('div[class*="InlineCompanyRating"]').first().children().first().text();
+                console.log("Company: " + jobCompany);
+
                 let jobObject = JSON.stringify({
                     title: jobTitle,
                     link: jobLink,
                     description: jobDescription,
+                    location: jobLocation,
+                    company: jobCompany,
                     regex: qualificationsRegEx.test(jobDescription),
                     qual: qualificationsRegEx.exec(jobDescription)
                 });
@@ -124,7 +128,7 @@ function createJobObject(jobTitle, jobLink) {
                         //seenJobs.push(jobIntro);
                         totUnique++;
                         console.log("Unique Jobs: " + totUnique);
-                    //wrkDB.insertPosting(pool, JSON.parse(jobObject));
+                    wrkDB.insertPosting(pool, JSON.parse(jobObject));
                     // if (!qualificationsRegEx.test(jobDescription)) {
                     //     let jobObject = jobDescription;
                     //     fileStream.write(jobObject + "\n-------------------------\n");
@@ -132,6 +136,7 @@ function createJobObject(jobTitle, jobLink) {
                     }
                 //console.log(qualificationsRegEx.test(jobDescription)); 
                 }
+                
                            
             }
             done();
