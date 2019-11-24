@@ -26,7 +26,8 @@ export default {
 <style lang="scss" scoped>
 .headerBackground {
   background-color: #166273;
-  height: 100%;
+  
+  height: 91px;
   width: 100%;
 }
 .headerBackground.transparent{

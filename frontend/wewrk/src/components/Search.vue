@@ -1,8 +1,7 @@
 <template>
-    <div>
+    <div class="searchContainer container-fluid">
         <SearchBar />
         <Results />
-        <h1>OMG</h1>
     </div>
 </template>
 
@@ -20,5 +19,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+.searchContainer {
+    padding:0;
+}
 </style>

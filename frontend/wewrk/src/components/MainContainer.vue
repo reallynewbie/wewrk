@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mainContainer">
     <Header id="altHeader" />
     <router-view name="underHeader"></router-view>
   </div>
@@ -17,4 +17,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mainContainer {
+  width: 100%;
+  height: 100%;
+}
 </style>
