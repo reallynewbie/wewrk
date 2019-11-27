@@ -14,17 +14,20 @@
         <b-img height="22px" width="22px" src="./assets/grid-f.png" class="listImg" />
       </div>
     </div>
-    <div class="results row">
+    <div class="results row no-gutters">
       <div class="col-md-5 postingCards">
         <JobCard v-bind:key="job.id" v-for="job in jobsFound"></JobCard>
       </div>
-      <div class="col-md-7 postingDesc">Descriptions here</div>
+      <div class="col-md-7 postingDesc">
+        <JobDescription></JobDescription>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import JobCard from "./JobCard";
+import JobDescription from "./JobDescription";
 
 export default {
   props: {
@@ -52,7 +55,8 @@ export default {
     };
   },
   components: {
-    JobCard
+    JobCard,
+    JobDescription
   }
 };
 </script>
@@ -64,7 +68,7 @@ export default {
   border-top: 1px solid lightgray;
 }
 .resultsHeader {
-  margin-top: 10px;
+  padding-top: 10px;
   height: 60px;
   margin-bottom: 2%;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
@@ -134,5 +138,8 @@ export default {
   overflow-y: auto;
   height: 100%;
   padding-right: 0;
+}
+.postingDesc {
+  height: 100%;
 }
 </style>
