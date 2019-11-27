@@ -1,18 +1,47 @@
 // wrkDB.js: mySQL module for wewrk
 const mysql = require('mysql');
 
+// Change connection info based on your mySQL setup
+var pool = mysql.createPool({
+	connectionLimit: 20,
+	host: "localhost",
+	user: "root",
+	password: "root",
+	database: "wewrk"
+    });
+
+/* Gets the current date, formatted as yyyy/mm/dd
+ */
+function getDate(){
+	var date = new Date();
+	y = date.getFullYear();
+	m = date.getMonth() + 1;
+	d = date.getDate() - 1;
+	date = y + '-' + m + '-' + d;
+	return date;
+}
+
 /* Inserts a jobObject into the mySql database, printing the insertID if successful
  */
 function insertPosting(pool, jobObject) {
-	var sql = mysql.format("INSERT INTO postings (title, html, url, location, company) VALUES (?, ?, ?, ?, ?)", [jobObject.title, jobObject.description, jobObject.link, jobObject.location, jobObject.company]);
+	var sql = mysql.format("INSERT INTO postings (title, html, url, location, company, date, pay, jobType) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+	 [jobObject.title, jobObject.description, jobObject.link, jobObject.location, jobObject.company, getDate(), jobObject.pay, jobObject.jobType]);
 	    pool.query(sql, function(err, result) {
-		if (err) throw err;
+		if (err) {
+			// Handle insertion of duplicate url
+			if (err.code == 'ER_DUP_ENTRY') {
+				return;
+			}
+			// Handle other mySQL errors
+			else throw err;
+		}
 		console.log("insertId: " + result.insertId);
 	    });
     }
 
 /* Queries the database for job postings matching the provided search criteria.
  * If title, location, or company is passed as a blank string the query will not filter using that criteria.
+ * This version requires distinct search fields.
  * Callback result is an array containing the returned rows
  */
 function selectPosting(pool, title, location, company, callback) {
@@ -42,11 +71,13 @@ function resultToObject(result) {
 	var resultArray = [];
 	result.forEach(function(res) {
 		let job = {
+			jobID: res.posting_id,
 			jobTitle: res.title,
 			companyName: res.company,
 			location: res.location,
-			link: res.url,
-			jobDescription: res.html
+			postedDate: res.date,
+			jobDescription: res.html,
+			link: res.url
 		}
 		resultArray.push(job);
 	});
@@ -55,7 +86,9 @@ function resultToObject(result) {
 
 
 module.exports = {
-	insertPosting: insertPosting,
-	selectPosting: selectPosting,
-	resultToObject: resultToObject
+	insertPosting,
+	selectPosting,
+	resultToObject,
+	getDate,
+	pool
 };

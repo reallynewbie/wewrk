@@ -2,41 +2,28 @@ const fs = require("fs");
 let Crawler = require("crawler");
 
 // DATABASE
-const mysql = require('mysql');
 const wrkDB = require('./wrkDB.js');
 
-const pool = mysql.createPool({
-    connectionLimit: 10,
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "wewrk"
-});
-
-var totUnique = 0;
-var totPulled = 0;
-//var seenJobs = [];//array for alternate duplicate filtering
-
-//const location = "Edmonton%2C+AB"
-const location = "alberta";
+const provinces = ["british+columbia", "alberta", "saskatchewan", "manitoba", "ontario", "quebec+province", "New+Brunswick", "Prince+Edward+Island", "Nova+Scotia", "Newfoundland+and+Labrador", "Yukon", "Northwest+Territories", "Nunavut"];
 const jobTitle = "";
 const qualificationsRegEx = new RegExp("Qualifications|What are we looking for|What You Bring to the Role|Requirements.*?<ul>(.*?)<\/ul>", "g");
 // const qualificationsRegEx = new RegExp("Qualifications.*?<ul>(.*?)<\/ul>", "g");
 //<b>(Qualifications|What are we looking for|What You Bring to the Role|Requirements|Must Haves|Experience)(.*?)<b>
 
-const curDate = new Date();
 //const fileStream = fs.createWriteStream(".\\logs\\jobs_" + curDate.toTimeString().slice(0, 8) + ".json");
 const fileStream = fs.createWriteStream(".\\logs\\jobs.json");
 
 let c = new Crawler({
-    maxConnections: 10,
+    maxConnections: 20,
 });
-
-c.queue([{
-    uri: 'https://ca.indeed.com/jobs?q=' + encodeURI(jobTitle) + '&l=' + location + '&fromage=1&limit=50&start=0',
-    jQuery: true,
-    callback: initSearchResults
-}]);
+provinces.forEach(function(location) {
+    c.queue([{
+        uri: 'https://ca.indeed.com/jobs?q=' + encodeURI(jobTitle) + '&l=' + location + '&fromage=1&limit=50&start=0',
+        jQuery: true,
+        callback: initSearchResults,
+        location: location
+    }]);
+});
 
 function initSearchResults(error, res, done) {
     if (error) {
@@ -53,12 +40,13 @@ function initSearchResults(error, res, done) {
         let totalJobs = parseInt(totalJobsString[1]);
         console.log(jobCount);
         // limit to 1000 jobs
+        console.log("Location: " + res.options.location);
         console.log("Total before limit: " + totalJobs);
         totalJobs = Math.min(totalJobs, 1000);
         console.log("Total after limit: " + totalJobs);
         
         for (let index = 0; index < totalJobs; index = index + 50) {
-            pullJobDetails(`https://ca.indeed.com/jobs?q=${jobTitle}&l=${location}&fromage=1&limit=50&start=${index}`)
+            pullJobDetails(`https://ca.indeed.com/jobs?q=${jobTitle}&l=${res.options.location}&fromage=1&limit=50&start=${index}`)
         }
         //pool.end();
     }
@@ -103,32 +91,32 @@ function createJobObject(jobTitle, jobLink) {
                 console.log('\n--------\nGrabbed', res.body.length, 'bytes');
                 let $ = res.$;
                 let jobDescription = $(".jobsearch-jobDescriptionText").first().html();
-                let jobLocation = $(".jobsearch-JobMetadataHeader-iconLabel").first().text();
+                //let jobLocation = $(".jobsearch-JobMetadataHeader-iconLabel").first().text();
+                let jobLocation = $('div[class*="icl-IconFunctional--location"]').next().text();
                 console.log("Location: " + jobLocation);
+                let jobSalary = $('div[class*="icl-IconFunctional--salary"]').next().text();
+                console.log("Pay: " + jobSalary);
+                let jobType = $('div[class*="icl-IconFunctional--jobs"]').next().text();
+                console.log("Type: " + jobType);
                 let jobCompany = $('div[class*="InlineCompanyRating"]').first().children().first().text();
                 console.log("Company: " + jobCompany);
 
+                // Assign job attributes based on the page, experienceLevel is set in the database
                 let jobObject = JSON.stringify({
                     title: jobTitle,
                     link: jobLink,
                     description: jobDescription,
                     location: jobLocation,
                     company: jobCompany,
+                    pay: jobSalary,
+                    jobType: jobType,
                     regex: qualificationsRegEx.test(jobDescription),
                     qual: qualificationsRegEx.exec(jobDescription)
                 });
                 if (jobDescription) {
-                    let jobIntro = jobDescription.substring(0, 400);
-                    console.log(jobIntro);
-                    totPulled++;
-                    console.log("Total Jobs: " + totPulled);
-                    //if (seenJobs.findIndex(element => element.includes(jobIntro)) == -1) {
                     if (!jobLink.includes("/pagead/")) {
                         fileStream.write(jobObject + ",\n");
-                        //seenJobs.push(jobIntro);
-                        totUnique++;
-                        console.log("Unique Jobs: " + totUnique);
-                    wrkDB.insertPosting(pool, JSON.parse(jobObject));
+                    wrkDB.insertPosting(wrkDB.pool, JSON.parse(jobObject));
                     // if (!qualificationsRegEx.test(jobDescription)) {
                     //     let jobObject = jobDescription;
                     //     fileStream.write(jobObject + "\n-------------------------\n");
