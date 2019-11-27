@@ -3,7 +3,7 @@
     <h1 id="searchDesc">Search by job keyword, company, or location</h1>
     <div class="searchbox">
       <b-input-group id="inputGroup">
-        <b-form-input />
+        <b-form-input class="inputBox"/>
         <b-input-group-append>
           <b-button type="submit" id="btn_findwork"><b-img src="./assets/magnifying_glass.png" id="magnifyingGlass"></b-img>Find work</b-button>
         </b-input-group-append>
@@ -66,6 +66,9 @@ export default {};
   color: #2f2f2f;
   height: 100%;
   width: 170px;
+  border-style: none;
+}
+.inputBox {
   border-style: none;
 }
 </style>

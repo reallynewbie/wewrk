@@ -45,6 +45,7 @@
         <div>Press</div>
         <div>Privacy Terms & Conditions</div>
         <div id="copyright">© 2019 wewrk. All rights reserved.</div>
+        <!-- Use Bootstrap grid  -->
       </div>
     </div>
   </div>

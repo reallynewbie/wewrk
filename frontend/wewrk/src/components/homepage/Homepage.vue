@@ -11,11 +11,13 @@
     </div>
     <div id="searchBoxContainer">
       <HomeSearchDiv />
-    </div>
+      <!-- Need border-bottom on this. -->
+    </div>  
     <div id="jobSites">
       <h2>
         Browse job postings from major job sites, all in one place.
         <span id="logos">
+          <!-- Add chevron/  -->
           <b-img class="img_Logos" src="./assets/wewrk_logo_monster.png" />
           <b-img class="img_Logos" src="./assets/wewrk_logo_indeed.png" />
           <b-img class="img_Logos" src="./assets/wewrk_logo_glassdoor.png" />
@@ -26,6 +28,7 @@
     <div class="br-line" />
     <RecentSearches />
     <AboutUs />
+    <!-- Eventually add the area here -->
     <Footer />
   </div>
 </template>
@@ -102,7 +105,7 @@ h2 {
   font-weight: 300;
   font-stretch: normal;
   font-style: normal;
-  line-height: 1.14;
+  line-height: 1.3;
   letter-spacing: normal;
   text-align: left;
   color: rgba(255, 255, 255, 0.87);

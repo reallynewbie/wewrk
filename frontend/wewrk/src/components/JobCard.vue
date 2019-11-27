@@ -3,18 +3,21 @@
     <div class="lightUp" />
     <div class="card-body">
       <b-card-title>{{jobTitle}}</b-card-title>
+      <!-- Need less space between -->
       <b-card-sub-title>{{companyName}}</b-card-sub-title>
+      <!-- Need more space between -->
       <b-card-text>
         <div class="bulletPoints row">
           <ul class="bullets col">
             <li>{{location}}</li>
-            <li>{{entryLevel}}</li>
+            <li>{{jobLevel}}</li>
           </ul>
           <ul class="bullets col">
             <li>{{jobType}}</li>
             <li>{{salary}}</li>
           </ul>
         </div>
+        <!-- Add Faint line for separation -->
         <div class="cardFooter">
           <h4 class="postedDate">Posted on: {{postedDate}}</h4>
           <h4 class="closingDate">
@@ -34,7 +37,7 @@ export default {
     // jobTitle: String,
     // companyName: String,
     // location: String,
-    // entryLevel:String,
+    // jobLevel:String,
     // jobType: String,
     // salary: String,
     // postedDate: String,
@@ -47,7 +50,7 @@ export default {
       jobTitle: "Frontend web application developer",
       companyName: "Test Company",
       location: "Edmonton, AB",
-      entryLevel: "Junior Entry Level",
+      jobLevel: "Junior Entry Level",
       jobType: "Full Time",
       salary: "$27.75/hr",
       postedDate: "10/29/2019",
@@ -66,6 +69,9 @@ export default {
 .jobCard {
   display: flex;
   flex-direction: row;
+  border-radius: 0;
+  border-width: 1px;
+  margin-top: -1px;
 }
 .lightUp {
   width: 6px;
@@ -83,7 +89,7 @@ li {
 }
 .card-body {
   text-align: left;
-    margin-left: 5px;
+  margin-left: 5px;
   font-family: Rubik;
   font-stretch: normal;
   font-style: normal;

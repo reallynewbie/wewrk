@@ -27,7 +27,7 @@ export default {
 .headerBackground {
   background-color: #166273;
   
-  height: 91px;
+  height: 80px;
   width: 100%;
 }
 .headerBackground.transparent{

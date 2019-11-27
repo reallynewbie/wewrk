@@ -12,6 +12,7 @@
         signed up yet, let’s get started! We would love to have you as a service partner to expand our sources.
       </p>
     </div>
+    <!-- Add Join Now Button -->
   </div>
 </template>
 
