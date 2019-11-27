@@ -7,11 +7,11 @@
       </div>
       <div class="row companyName">{{companyName}}</div>
       <div class="bulletPoints row">
-        <ul class="bullets col">
+        <ul class="bullets col-md-3">
           <li>{{location}}</li>
           <li>{{jobLevel}}</li>
         </ul>
-        <ul class="bullets col">
+        <ul class="bullets col-md-3">
           <li>{{jobType}}</li>
           <li>{{salary}}</li>
         </ul>
@@ -58,25 +58,37 @@ export default {
   text-align: left;
 }
 .jobTitle {
+  
   font-size: 30px;
   font-weight: bold;
   line-height: 1.2;
 }
 .companyName {
+  padding-top: 10px;
+  margin-left: 0;
   font-size: 16px;
   line-height: 1.13;
   color: rgba(0, 0, 0, 0.87);
 }
 .jobDescriptionHeader {
+  padding-top: 26px;
   font-size: 16px;
   font-weight: bold;
   line-height: 1;
   color: #1e1e1e;
 }
+.bulletPoints {
+  padding-top: 2px;
+}
 .bullets {
+  margin-left: 15px;
+  margin-bottom: 0;
   line-height: 1.33;
   font-size: 12px;
   color: #1e1e1e;
+}
+.bullets>li {
+  padding-top: 8px;
 }
 .jobDescriptionHTML {
   font-size: 14px;
