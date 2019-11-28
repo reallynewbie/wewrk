@@ -3,7 +3,7 @@
     <div class="container jobDescriptionContainer">
       <div class="row">
         <div class="col-8 jobTitle">{{jobTitle}}</div>
-        <div class="offset-md-2 col-md-2">Apply Button</div>
+        <a class="offset-md-2 col-md-2 applyButton" href="https://www.indeed.com/" target="_blank"><h1 class="align-middle">Apply now</h1></a>
       </div>
       <div class="row companyName">{{companyName}}</div>
       <div class="bulletPoints row">
@@ -43,6 +43,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.applyButton {
+  border-radius: 4px;
+  background-color: #eed350;
+  width: 124.9px;
+  height: 36px;
+}
+.applyButton > h1 {
+  padding-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.21;
+  color: #2f2f2f;
+  text-align: center;
+}
 .areaContainer {
   border-top: 7px solid #eed350;
   padding-left: 55px;
@@ -100,6 +114,12 @@ export default {
 .jobDescriptionHTML {
   /deep/ ul {
     padding: 0;
+  }
+}
+
+.jobDescriptionHTML {
+  /deep/ li {
+    margin-left: 15px;
   }
 }
 

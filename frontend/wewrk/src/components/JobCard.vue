@@ -1,10 +1,9 @@
 <template>
-  <b-card no-body class="jobCard">
-    <div class="lightUp" />
+  <b-card no-body class="jobCard" v-on:click="makeActive">
+    <div class="lightUp" :class="{active:activeTab == true}" />
     <div class="card-body">
       <b-card-title>{{jobTitle}}</b-card-title>
-      <!-- Need less space between -->
-      <b-card-sub-title>{{companyName}}</b-card-sub-title>
+      <b-card-sub-title class="subtext">{{companyName}}</b-card-sub-title>
       <!-- Need more space between -->
       <b-card-text>
         <div class="bulletPoints row">
@@ -27,7 +26,10 @@
         </div>
       </b-card-text>
     </div>
-    <div class="icons">Icons</div>
+    <div class="icons">
+      <font-awesome-icon icon="heart" class="heartIcon" />
+      <font-awesome-icon icon="times-circle" class="dismissIcon" />
+    </div>
   </b-card>
 </template>
 
@@ -42,6 +44,7 @@ export default {
     // salary: String,
     // postedDate: String,
     // closingDate: String,
+    activeTab: Boolean
   },
   computed: {},
   data() {
@@ -54,18 +57,43 @@ export default {
       jobType: "Full Time",
       salary: "$27.75/hr",
       postedDate: "10/29/2019",
-      closingDate: "11/30/2019"
+      closingDate: "11/30/2019",
+      // activeTab: false,
     };
   },
   methods: {
-    makeActive() {
-      this.$emit();
+    makeActive: function () {
+      // this.$emit("hello", event);
+      this.activeTab = !this.activeTab;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.heartIcon {
+  color: #e8e8e8;
+  margin-right: 5px;
+}
+
+.heartIcon:hover {
+  color: #e72204;
+  cursor: pointer;
+}
+
+.dismissIcon {
+  color: #e8e8e8;
+}
+
+.dismissIcon:hover {
+  color: #1b1c1d;
+  cursor: pointer;
+}
+
+.icons {
+  padding-right: 15px;
+  padding-top: 18px;
+}
 .jobCard {
   display: flex;
   flex-direction: row;
@@ -75,6 +103,8 @@ export default {
 }
 .lightUp {
   width: 6px;
+}
+.active {
   background-color: #eed350;
 }
 
@@ -100,10 +130,12 @@ li {
   font-weight: bold;
   line-height: 1.29;
   color: rgba(0, 0, 0, 0.87);
+  margin-bottom: 3px;
 }
-.card-subtitle {
+.subtext {
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(0, 0, 0, 0.87) !important;
+  margin-bottom: 8px;
 }
 .cardFooter {
   display: flex;

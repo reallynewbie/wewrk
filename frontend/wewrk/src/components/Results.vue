@@ -16,7 +16,7 @@
     </div>
     <div class="results row no-gutters">
       <div class="col-md-5 postingCards">
-        <JobCard v-bind:key="job.id" v-for="job in jobsFound"></JobCard>
+        <JobCard v-bind:key="job.id" v-for="job in jobsFound" v-on:hello="test($event)" ></JobCard>
       </div>
       <div class="col-md-7 postingDesc">
         <JobDescription></JobDescription>
@@ -57,20 +57,26 @@ export default {
   components: {
     JobCard,
     JobDescription
-  }
+  },
+  methods: {
+    test: function(test) {
+      console.log(test);
+      // console.log(event);
+    }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .resultsContainer {
   width: 100%;
-  height: 75vh;
+  height: 80vh;
   border-top: 1px solid lightgray;
 }
 .resultsHeader {
   padding-top: 10px;
   height: 60px;
-  margin-bottom: 2%;
+  margin-bottom: 5px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
 }
 .results {
