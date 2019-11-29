@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "crawler": "^1.2.1"
+    "crawler": "^1.2.1",
+    "express": "^4.17.1"
   }
 }
