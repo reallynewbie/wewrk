@@ -1,0 +1,107 @@
+<template>
+  <div id="recentSearches">
+    <h1>Not sure where to start?</h1>
+    <h2>People like you are searching for things like...</h2>
+    <div id="searches">
+      <div class="search" v-for="search in recentSearches" v-bind:key="search.id">
+        <p>{{search.value}}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      recentSearches: [
+        {
+          id: 0,
+          value: "Developer, Stet Solutions"
+        },
+        {
+          id: 1,
+          value: "Developer, Edmonton, AB"
+        },
+        {
+          id: 2,
+          value: "Front-End Developer"
+        },
+        {
+          id: 3,
+          value: "Web Designer"
+        },
+        {
+          id: 4,
+          value: "Software Developer"
+        },
+        {
+          id: 5,
+          value: "Jobber"
+        }
+      ]
+    };
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+#recentSearches {
+  margin-left: 11%;
+  width: 70%;
+  padding-top: 3%;
+	margin-bottom:117px;
+}
+h1 {
+  font-family: Rubik;
+  font-size: 35px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.14;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1b1c1d;
+}
+h2 {
+  font-family: Rubik;
+  font-size: 18px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #767676;
+}
+#searches {
+	margin-top: 28px;
+  text-align: left;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+}
+#searches > div {
+  flex: 1 1 25%;
+  margin-right: 3%;
+  margin-bottom: 13px;
+}
+.search {
+  background-color: #f8f7f0;
+  height: 44px;
+}
+.search > p {
+  padding-top: 12px;
+  padding-left: 20px;
+	font-family: Rubik;
+  font-size: 18px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1b1c1d;
+}
+</style>

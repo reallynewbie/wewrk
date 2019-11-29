@@ -1,12 +1,14 @@
 // wrkDB.js: mySQL module for wewrk
 const mysql = require('mysql');
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Change connection info based on your mySQL setup
 var pool = mysql.createPool({
 	connectionLimit: 20,
 	host: "localhost",
 	user: "root",
-	password: "root",
+	password: process.env.PASSWORD,
 	database: "wewrk"
     });
 
