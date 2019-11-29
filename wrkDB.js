@@ -16,7 +16,7 @@ function getDate(){
 	var date = new Date();
 	y = date.getFullYear();
 	m = date.getMonth() + 1;
-	d = date.getDate() - 1;
+	d = date.getDate() -1;
 	date = y + '-' + m + '-' + d;
 	return date;
 }
@@ -65,6 +65,22 @@ function selectPosting(pool, title, location, company, callback) {
 	
 }
 
+/*
+{
+      jobID: 1234, (some ID number to be able to identify the job posting)
+      jobTitle: "Frontend web application developer",
+      companyName: "Test Company",
+      location: "Edmonton, AB",
+      entryLevel: "Junior Entry Level",
+      jobType: "Full Time",
+      salary: "$27.75/hr",
+      postedDate: "10/29/2019",
+      closingDate: "11/30/2019",
+      jobDescription: "HTML HERE",
+      applicationLink: "Insert link to the apply button here"
+}
+ */
+
 /* Converts the result of a mySQL query into an object
  */
 function resultToObject(result) {
@@ -75,6 +91,9 @@ function resultToObject(result) {
 			jobTitle: res.title,
 			companyName: res.company,
 			location: res.location,
+			experienceLevel: res.experienceLevel,
+			jobType: res.jobType,
+			pay: res.pay,
 			postedDate: res.date,
 			jobDescription: res.html,
 			link: res.url
