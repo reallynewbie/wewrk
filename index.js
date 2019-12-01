@@ -34,6 +34,9 @@ function initSearchResults(error, res, done) {
         jobCount = $("#searchCountPages").first().text();  // Expected Page 1 of 260 Jobs   
         //extract number of jobs and strip comma for large numbers      
         let totalJobsString = RegExp("(\\d*,?\\d*) jobs").exec(jobCount.trim());
+        if (totalJobsString == null) {
+            return;
+        }
         totalJobsString[1] = totalJobsString[1].replace(',', '');
         
         //parse into int for ease of use
@@ -48,7 +51,6 @@ function initSearchResults(error, res, done) {
         for (let index = 0; index < totalJobs; index = index + 50) {
             pullJobDetails(`https://ca.indeed.com/jobs?q=${jobTitle}&l=${res.options.location}&fromage=1&limit=50&start=${index}`)
         }
-        //pool.end();
     }
     done();
 }
@@ -116,7 +118,7 @@ function createJobObject(jobTitle, jobLink) {
                 if (jobDescription) {
                     if (!jobLink.includes("/pagead/")) {
                         fileStream.write(jobObject + ",\n");
-                    wrkDB.insertPosting(wrkDB.pool, JSON.parse(jobObject));
+                    //wrkDB.insertPosting(wrkDB.pool, JSON.parse(jobObject));
                     // if (!qualificationsRegEx.test(jobDescription)) {
                     //     let jobObject = jobDescription;
                     //     fileStream.write(jobObject + "\n-------------------------\n");
