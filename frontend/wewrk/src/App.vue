@@ -54,7 +54,6 @@ export default {
   text-align: center;
   width: 100%;
   height: 100%;
-
 }
 body {
   margin: 0;
@@ -62,5 +61,11 @@ body {
   top: 0;
   left: 0;
   width: 100%;
+}
+
+.customSelect {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
 }
 </style>

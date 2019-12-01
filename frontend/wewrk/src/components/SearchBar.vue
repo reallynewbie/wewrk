@@ -10,15 +10,18 @@
       </b-col>
       <b-col>
         <h1 class="formHeader">Job Type:</h1>
-        <b-form-select v-model="jobTypeSelected" :options="jobTypeOptions"></b-form-select>
+        <b-form-select plain v-model="jobTypeSelected" :options="jobTypeOptions" class="customSelect"></b-form-select>
+        <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
         <h1 class="formHeader">Experience Level:</h1>
-        <b-form-select v-model="experienceSelected" :options="experienceOptions"></b-form-select>
+        <b-form-select plain v-model="experienceSelected" :options="experienceOptions" class="customSelect"></b-form-select>
+        <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col cols="3">
         <h1 class="formHeader">Salary:</h1>
-        <b-form-select v-model="salarySelected" :options="salaryOptions"></b-form-select>
+        <b-form-select plain v-model="salarySelected" :options="salaryOptions" class="customSelect"></b-form-select>
+        <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
         <b-button>Find work</b-button>
@@ -29,6 +32,9 @@
 
 <script>
 export default {
+  mounted: function() {
+    this.searchValue = this.$route.query.q;
+  },
   data() {
     return {
       searchValue: "",
@@ -60,6 +66,16 @@ export default {
 <style lang="scss" scoped>
 p {
   text-align: left;
+}
+
+.customSelect + svg {
+  float: right;
+  margin-top: -33px;
+  margin-right: 10px;
+  pointer-events: none;
+  background-color: transparent;
+  color: black !important;
+  padding-right: 5px;
 }
 
 .formHeader {

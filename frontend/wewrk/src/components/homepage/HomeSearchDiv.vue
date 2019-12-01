@@ -3,9 +3,16 @@
     <h1 id="searchDesc">Search by job keyword, company, or location</h1>
     <div class="searchbox">
       <b-input-group id="inputGroup">
-        <b-form-input class="inputBox"/>
+        <b-form-input class="inputBox" v-model="search" />
         <b-input-group-append>
-          <b-button type="submit" id="btn_findwork"><b-img src="./assets/magnifying_glass.png" id="magnifyingGlass"></b-img>Find work</b-button>
+          <b-button
+            :to="{path:'/search', query:{q:search} }"
+            type="submit"
+            id="btn_findwork"
+            class="btn"
+          >
+            <b-img src="./assets/magnifying_glass.png" id="magnifyingGlass"></b-img>Find work
+          </b-button>
         </b-input-group-append>
       </b-input-group>
     </div>
@@ -13,14 +20,21 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      search: "asdjfkjsklfjkljkl",
+      data: "asdfffff"
+    };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 #magnifyingGlass {
-  width:23.5px;
-  height:23.5px;
-  margin-right:9px;
+  width: 23.5px;
+  height: 23.5px;
+  margin-right: 9px;
 }
 .searchDiv {
   width: 44%;
@@ -52,7 +66,6 @@ export default {};
   background-color: #ffffff;
 }
 #btn_findwork {
-
   background-color: #eed350;
   color: #2f2f2f;
   font-family: Rubik;
@@ -67,6 +80,7 @@ export default {};
   height: 100%;
   width: 170px;
   border-style: none;
+  padding-top: 23px;
 }
 .inputBox {
   border-style: none;

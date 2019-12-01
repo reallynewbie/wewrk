@@ -1,15 +1,15 @@
 <template>
   <div class="resultsContainer container-fluid">
     <div class="resultsHeader row align-items-center">
-      <div class="offset-md-1 col-md-1 overview">
-        <p class="searchTermLocation">{{searchTerm}} in {{searchLocation}}</p>
+      <div class="offset-md-1 col-md-2 overview">
+        <p class="searchTermLocation">{{searchTerm}}</p>
         <p class="resultsNumber">{{resultsNum}} results</p>
       </div>
       <div class="offset-md-1 col-md-2 sort">
         <h3 class="sortHeader">Sort By:</h3>
         <b-form-select v-model="selectedSort" :options="sortOptions" class="dropdown"></b-form-select>
       </div>
-      <div class="offset-sm-3 offset-lg-5 col-md-1 displayType">
+      <div class="offset-sm-3 offset-lg-4 col-md-1 displayType">
         <b-img height="22px" width="30.8px" src="./assets/unordered-list.png" class="listImg" />
         <b-img height="22px" width="22px" src="./assets/grid-f.png" class="listImg" />
       </div>
@@ -37,11 +37,12 @@ export default {
     // currentSortType: String,
     // currentDisplayType: String,
   },
-  computed: {},
+  mounted: function() {
+        this.searchTerm = this.$route.query.q
+  },
   data() {
     return {
       searchTerm: "asdf",
-      searchLocation: "Here!",
       resultsNum: 0,
       currentSortType: "",
       currentDisplayType: "",
@@ -93,6 +94,7 @@ export default {
   border-style: none;
   width: 50%;
   margin-bottom: 8px;
+  padding-right: 50px;
 }
 .sort {
   display: flex;
@@ -100,7 +102,7 @@ export default {
   align-items: center;
 }
 .sortHeader {
-  width: 72px;
+  width: 52px;
   font-family: Rubik;
   font-size: 14px;
   font-weight: normal;
@@ -147,5 +149,13 @@ export default {
 }
 .postingDesc {
   height: 100%;
+}
+select + svg {
+  float: right;
+  margin-top: -10px;
+  margin-right: 10px;
+  pointer-events: none;
+  background-color: transparent;
+  color: black !important;
 }
 </style>
