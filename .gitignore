@@ -62,3 +62,5 @@ typings/
 
 # VSCode Directory
 .vscode
+package-lock.json
+.gitignore
