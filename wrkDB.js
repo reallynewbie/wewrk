@@ -46,22 +46,29 @@ function insertPosting(pool, jobObject) {
  * This version requires distinct search fields.
  * Callback result is an array containing the returned rows
  */
-function selectPosting(pool, title, location, company, callback) {
+function selectPosting(pool, title, location, company, pay, type, experience, offset, callback) {
 
 	// Escape search terms if not blank
 	if (title != '') title = mysql.escape(title).replace(/'/g, "");
 	if (location != '') location = mysql.escape(location).replace(/'/g, "");
 	if (company != '') company = mysql.escape(company).replace(/'/g, "");
+	if (pay != '') pay = mysql.escape(pay).replace(/'/g, "");
+	if (type != '') type = mysql.escape(type).replace(/'/g, "");
+	if (experience != '') experience = mysql.escape(experience).replace(/'/g, "");
 
 	// Build query using search terms
 	var sql = "SELECT * FROM postings WHERE title LIKE '%" + title +
 	 "%' AND location LIKE '%" + location +
-	  "%' AND company LIKE '%" + company + "%'"; 
+	 "%' AND company LIKE '%" + company +
+	 "%' AND pay >= " + pay +
+	 " AND jobType LIKE '%" + type +
+	 "%' AND experienceLevel LIKE '%" + experience +
+	 "%' LIMIT " + offset + ", 10"; 
 
 	// Execute query
 	pool.query(sql, function(err, result) {
 		if (err) return callback(err);
-		callback(null, result);
+		callback(null, resultToObject(result));
 		
 	});
 	
@@ -86,6 +93,7 @@ function selectPosting(pool, title, location, company, callback) {
 /* Converts the result of a mySQL query into an object
  */
 function resultToObject(result) {
+	console.log(result);
 	var resultArray = [];
 	result.forEach(function(res) {
 		let job = {

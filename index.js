@@ -118,7 +118,7 @@ function createJobObject(jobTitle, jobLink) {
                 if (jobDescription) {
                     if (!jobLink.includes("/pagead/")) {
                         fileStream.write(jobObject + ",\n");
-                    //wrkDB.insertPosting(wrkDB.pool, JSON.parse(jobObject));
+                    wrkDB.insertPosting(wrkDB.pool, JSON.parse(jobObject));
                     // if (!qualificationsRegEx.test(jobDescription)) {
                     //     let jobObject = jobDescription;
                     //     fileStream.write(jobObject + "\n-------------------------\n");
