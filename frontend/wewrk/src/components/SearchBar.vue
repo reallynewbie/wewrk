@@ -3,19 +3,27 @@
     <b-row align-v="end" class="searchRow">
       <b-col cols="4">
         <h1 class="formHeader">Search by job keyword, company, or location</h1>
-        <b-form-input type="search" v-model="searchValue"></b-form-input>
-        <!-- <span>
-          <b-img height="14px" width="auto" src="./assets/magnifying_glass.png" />
-        </span>-->
+          <b-form-input type="search" v-model="searchValue" class="customInput"></b-form-input>
+          <font-awesome-icon icon="search" class="searchIcon" size="lg" />
       </b-col>
       <b-col>
         <h1 class="formHeader">Job Type:</h1>
-        <b-form-select plain v-model="jobTypeSelected" :options="jobTypeOptions" class="customSelect"></b-form-select>
+        <b-form-select
+          plain
+          v-model="jobTypeSelected"
+          :options="jobTypeOptions"
+          class="customSelect"
+        ></b-form-select>
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
         <h1 class="formHeader">Experience Level:</h1>
-        <b-form-select plain v-model="experienceSelected" :options="experienceOptions" class="customSelect"></b-form-select>
+        <b-form-select
+          plain
+          v-model="experienceSelected"
+          :options="experienceOptions"
+          class="customSelect"
+        ></b-form-select>
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col cols="3">
@@ -24,7 +32,7 @@
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
-        <b-button>Find work</b-button>
+        <b-button class="searchButton">Find work</b-button>
       </b-col>
     </b-row>
   </b-container>
@@ -68,7 +76,23 @@ p {
   text-align: left;
 }
 
+.customSelect {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+}
+
 .customSelect + svg {
+  float: right;
+  margin-top: -33px;
+  margin-right: 10px;
+  pointer-events: none;
+  background-color: transparent;
+  color: black !important;
+  padding-right: 5px;
+}
+
+.customInput + svg {
   float: right;
   margin-top: -33px;
   margin-right: 10px;
@@ -80,7 +104,6 @@ p {
 
 .formHeader {
   font-size: 16px;
-  font-family: "Rubik";
   font-weight: 700;
   text-align: left;
 }
@@ -88,6 +111,10 @@ p {
   margin-top: 25px;
   padding: 0;
   margin-bottom: 30px;
+  font-family: Rubik;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
 }
 
 .searchRow {
@@ -97,9 +124,24 @@ p {
 .btn {
   vertical-align: bottom;
   background-color: #166273;
+  border-style: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.19;
+  padding-top: 9px;
+  padding-bottom: 8px;
+  padding-left: 23px;
+  padding-right: 23px;
 }
-.btn-secondary {
-  background-color: #166273;
-  border-color: #166273;
+.searchButton:hover {
+  background-color: #95b7bf;
+}
+.searchIcon {
+  float: right;
+  padding-top:4px;
+}
+.searchInput {
+  display: flex;
 }
 </style>
