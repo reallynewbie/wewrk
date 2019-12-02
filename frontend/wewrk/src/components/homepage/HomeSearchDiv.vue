@@ -3,7 +3,7 @@
     <h1 id="searchDesc">Search by job keyword, company, or location</h1>
     <div class="searchbox">
       <b-input-group id="inputGroup">
-        <b-form-input class="inputBox" v-model="search" />
+        <b-form-input @keyup.enter="searchClicked" class="inputBox" v-model="search" />
         <b-input-group-append>
           <b-button
             :to="{path:'/search', query:{q:search} }"
@@ -23,9 +23,13 @@
 export default {
   data() {
     return {
-      search: "asdjfkjsklfjkljkl",
-      data: "asdfffff"
+      search: ""
     };
+  },
+  methods: {
+    searchClicked() {
+      this.$router.push({ path: "/search", query: { q: this.search } });
+    }
   }
 };
 </script>

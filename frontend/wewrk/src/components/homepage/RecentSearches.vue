@@ -4,7 +4,12 @@
     <h2>People like you are searching for things like...</h2>
     <div id="searches">
       <div class="search" v-for="search in recentSearches" v-bind:key="search.id">
-        <p>{{search.value}}</p>
+        <router-link :to="{ path: '/search', query: {q:search.value} }" class="links">
+          <p>
+            {{search.value}}
+            <font-awesome-icon icon="chevron-right" class="chevron-right" />
+          </p>
+        </router-link>
       </div>
     </div>
   </div>
@@ -50,7 +55,7 @@ export default {
   margin-left: 11%;
   width: 70%;
   padding-top: 3%;
-	margin-bottom:117px;
+  margin-bottom: 117px;
 }
 h1 {
   font-family: Rubik;
@@ -75,7 +80,7 @@ h2 {
   color: #767676;
 }
 #searches {
-	margin-top: 28px;
+  margin-top: 28px;
   text-align: left;
   display: flex;
   flex-flow: row wrap;
@@ -91,10 +96,16 @@ h2 {
   background-color: #f8f7f0;
   height: 44px;
 }
-.search > p {
+.search:hover {
+  background-color: #f0eedf;
+}
+.search:hover > .chevron-right {
+  border: solid 2px var(--warm-grey);
+}
+.search > a > p {
   padding-top: 12px;
   padding-left: 20px;
-	font-family: Rubik;
+  font-family: Rubik;
   font-size: 18px;
   font-weight: normal;
   font-stretch: normal;
@@ -103,5 +114,17 @@ h2 {
   letter-spacing: normal;
   text-align: left;
   color: #1b1c1d;
+}
+.chevron-right {
+  float: right;
+  margin-right: 30px;
+  color: #707070;
+  border: solid 1px var(--warm-grey);
+}
+.chevron-right:hover {
+  border: solid 2px var(--warm-grey);
+}
+.links {
+  text-decoration: none;
 }
 </style>
