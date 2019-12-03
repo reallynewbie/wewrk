@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const myAPI = axios.create({
-    baseURL: 'http://localhost:9001'
+    baseURL: 'http://wewrk.ca:9001'
 });
 
 async function testFunction() {
