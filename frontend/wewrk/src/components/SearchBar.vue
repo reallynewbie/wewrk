@@ -3,8 +3,8 @@
     <b-row align-v="end" class="searchRow">
       <b-col cols="4">
         <h1 class="formHeader">Search by job keyword, company, or location</h1>
-          <b-form-input type="search" v-model="searchValue" class="customInput"></b-form-input>
-          <font-awesome-icon icon="search" class="searchIcon" size="lg" />
+        <b-form-input type="search" v-model="searchValue" class="customInput"></b-form-input>
+        <font-awesome-icon icon="search" class="searchIcon" size="lg" />
       </b-col>
       <b-col>
         <h1 class="formHeader">Job Type:</h1>
@@ -32,13 +32,15 @@
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
-        <b-button class="searchButton">Find work</b-button>
+        <b-button @click="testSearch" class="searchButton">Find work</b-button>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
+import APIFunctions from "../../services/api";
+
 export default {
   mounted: function() {
     this.searchValue = this.$route.query.q;
@@ -67,6 +69,12 @@ export default {
         { value: "2", text: "> $50,000" }
       ]
     };
+  },
+  methods: {
+    testSearch: async function() {
+      let results = await APIFunctions.testSearch();
+      this.$root.$emit("newResults", results);
+    }
   }
 };
 </script>
@@ -137,9 +145,12 @@ p {
 .searchButton:hover {
   background-color: #95b7bf;
 }
+.searchButton:active, .searchButton:focus {
+  background-color: #166273;
+}
 .searchIcon {
   float: right;
-  padding-top:4px;
+  padding-top: 4px;
 }
 .searchInput {
   display: flex;

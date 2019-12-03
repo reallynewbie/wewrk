@@ -63,9 +63,4 @@ body {
   width: 100%;
 }
 
-.customSelect {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -o-appearance: none;
-}
 </style>

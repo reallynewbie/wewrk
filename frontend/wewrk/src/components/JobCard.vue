@@ -9,11 +9,11 @@
         <div class="bulletPoints row">
           <ul class="bullets col">
             <li>{{location}}</li>
-            <li>{{jobLevel}}</li>
+            <li>{{experienceLevel ? experienceLevel: "Experience not specified"}}</li>
           </ul>
           <ul class="bullets col">
-            <li>{{jobType}}</li>
-            <li>{{salary}}</li>
+            <li>{{jobType ? jobType : "Type not specified"}}</li>
+            <li>{{pay ? pay : "Salary not specified"}}</li>
           </ul>
         </div>
         <!-- Add Faint line for separation -->
@@ -21,7 +21,7 @@
           <h4 class="postedDate">Posted on: {{postedDate}}</h4>
           <h4 class="closingDate">
             Closing Date:
-            <span>{{closingDate}}</span>
+            <span>{{closingDate ? closingDate : "N/A"}}</span>
           </h4>
         </div>
       </b-card-text>
@@ -35,38 +35,41 @@
 
 <script>
 export default {
-  props: {
-    // jobTitle: String,
-    // companyName: String,
-    // location: String,
-    // jobLevel:String,
-    // jobType: String,
-    // salary: String,
-    // postedDate: String,
-    // closingDate: String,
-    activeTab: Boolean
-  },
+  props: ["jobInfo"],
   computed: {},
   data() {
     return {
-      jobID: 1234,
-      jobTitle: "Frontend web application developer",
-      companyName: "Test Company",
-      location: "Edmonton, AB",
-      jobLevel: "Junior Entry Level",
-      jobType: "Full Time",
-      salary: "$27.75/hr",
-      postedDate: "10/29/2019",
-      closingDate: "11/30/2019",
-      // activeTab: false,
+      jobID: this.jobInfo.jobID,
+      jobTitle: this.jobInfo.jobTitle,
+      companyName: this.jobInfo.companyName,
+      location: this.jobInfo.location,
+      experienceLevel: this.jobInfo.experienceLevel,
+      jobType: this.jobInfo.jobType,
+      pay: this.jobInfo.pay,
+      postedDate: this.jobInfo.postedDate,
+      closingDate: this.jobInfo.closingDate,
+      jobDescription: this.jobInfo.jobDescription,
+      activeTab: false
     };
   },
   methods: {
-    makeActive: function () {
-      // this.$emit("hello", event);
+    makeActive: function() {
+      this.$root.$emit("clickedCard", {
+        jobID: this.jobInfo.jobID,
+        jobTitle: this.jobInfo.jobTitle,
+        companyName: this.jobInfo.companyName,
+        location: this.jobInfo.location,
+        experienceLevel: this.jobInfo.experienceLevel,
+        jobType: this.jobInfo.jobType,
+        pay: this.jobInfo.pay,
+        postedDate: this.jobInfo.postedDate,
+        closingDate: this.jobInfo.closingDate,
+        jobDescription: this.jobInfo.jobDescription
+      });
       this.activeTab = !this.activeTab;
     }
-  }
+  },
+  watch: {}
 };
 </script>
 
