@@ -41,29 +41,9 @@ app.get("/search", (req, res) =>  {
     type = (typeof type === 'undefined') ? '' : type;
     experience = (typeof experience === 'undefined') ? '' : experience;
 
-    wrkDB.selectPosting(wrkDB.pool, title, location, company, pay, type, experience, offset, function(err, results) {
+    wrkDB.selectPosting(wrkDB.pool, title, location, company, pay, type, experience, offset, function(err, resultObject) {
         if (err) console.log(err);
-        res.send(JSON.stringify({
-            results/*: [
-                {
-                    jobID: data.,
-                    jobTitle: "Frontend web application developer",
-                    companyName: "Test Company",
-                    location: "Edmonton, AB",
-                    experienceLevel: "Junior Entry Level",
-                    jobType: "Full Time",
-                    pay: "$27.75/hr",
-                    postedDate: "10/29/2019",
-                    jobDescription: "HTML HERE",
-                    link: "Insert link to the apply button here"
-                }
-            ],*/,
-            //TODO: total and exclusions
-            totalResults: 123, 
-            excludedType: 0,
-            excludedPay: 0,
-            excludedExperience: 0,
-        }))
+        res.send(JSON.stringify(resultObject))
     });
 })
 

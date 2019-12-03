@@ -9,7 +9,8 @@ var pool = mysql.createPool({
 	host: "localhost",
 	user: "root",
 	password: process.env.PASSWORD,
-	database: "wewrk"
+	database: "wewrk",
+	multipleStatements: true
     });
 
 /* Gets the current date, formatted as yyyy/mm/dd
@@ -57,16 +58,48 @@ function selectPosting(pool, title, location, company, pay, type, experience, of
 	if (experience != '') experience = mysql.escape(experience).replace(/'/g, "");
 
 	// Build query using search terms
-	var sql = "SELECT * FROM postings WHERE title LIKE '%" + title +
+	var select = "SELECT * FROM postings WHERE title LIKE '%" + title +
 	 "%' AND location LIKE '%" + location +
 	 "%' AND company LIKE '%" + company +
 	 "%' AND pay >= " + pay +
 	 " AND jobType LIKE '%" + type +
 	 "%' AND experienceLevel LIKE '%" + experience +
-	 "%' LIMIT " + offset + ", 10"; 
+	 "%' LIMIT " + offset + ", 10;"; 
+	
+	// Count total results before limit
+	var total = "SELECT COUNT(*) AS total FROM postings WHERE title LIKE '%" + title +
+	"%' AND location LIKE '%" + location +
+	"%' AND company LIKE '%" + company +
+	"%' AND pay >= " + pay +
+	" AND jobType LIKE '%" + type +
+	"%' AND experienceLevel LIKE '%" + experience +
+	"%';";
 
-	// Execute query
-	pool.query(sql, function(err, result) {
+	// Count jobs excluded due to missing attributes
+	var exType = "SELECT COUNT(*) AS exType FROM postings WHERE title LIKE '%" + title +
+	"%' AND location LIKE '%" + location +
+	"%' AND company LIKE '%" + company +
+	"%' AND pay >= " + pay +
+	" AND jobType LIKE '" +
+	"' AND experienceLevel LIKE '%" + experience +
+	"%';";
+	var exPay = "SELECT COUNT(*) AS exPay FROM postings WHERE title LIKE '%" + title +
+	"%' AND location LIKE '%" + location +
+	"%' AND company LIKE '%" + company +
+	"%' AND pay LIKE '" +
+	"' AND jobType LIKE '%" + type +
+	"%' AND experienceLevel LIKE '%" + experience +
+	"%';";
+	var exExperience = "SELECT COUNT(*) AS exExperience FROM postings WHERE title LIKE '%" + title +
+	"%' AND location LIKE '%" + location +
+	"%' AND company LIKE '%" + company +
+	"%' AND pay >= " + pay +
+	" AND jobType LIKE '%" + type +
+	"%' AND experienceLevel LIKE '" +
+	"';";
+
+	// Execute 5 queries, result of query n = result[n]
+	pool.query(select + total + exType + exPay + exExperience, function(err, result) {
 		if (err) return callback(err);
 		callback(null, resultToObject(result));
 		
@@ -93,9 +126,8 @@ function selectPosting(pool, title, location, company, pay, type, experience, of
 /* Converts the result of a mySQL query into an object
  */
 function resultToObject(result) {
-	console.log(result);
 	var resultArray = [];
-	result.forEach(function(res) {
+	result[0].forEach(function(res) {
 		let job = {
 			jobID: res.posting_id,
 			jobTitle: res.title,
@@ -110,7 +142,15 @@ function resultToObject(result) {
 		}
 		resultArray.push(job);
 	});
-	return resultArray;
+	var resultObject = {
+		results: resultArray,
+		totalResults: result[1][0].total,
+		excludedType: result[2][0].exType,
+		excludedPay: result[3][0].exPay,
+		excludedExperience: result[4][0].exExperience
+	}
+	console.log(resultObject);
+	return resultObject;
 }
 
 
