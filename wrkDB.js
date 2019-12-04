@@ -19,7 +19,7 @@ function getDate(){
 	var date = new Date();
 	y = date.getFullYear();
 	m = date.getMonth() + 1;
-	d = date.getDate() -1;
+	d = date.getDate() - 1;
 	date = y + '-' + m + '-' + d;
 	return date;
 }
@@ -64,7 +64,7 @@ function selectPosting(pool, title, location, company, pay, type, experience, of
 	 "%' AND pay >= " + pay +
 	 " AND jobType LIKE '%" + type +
 	 "%' AND experienceLevel LIKE '%" + experience +
-	 "%' LIMIT " + offset + ", 10;"; 
+	 "%' ORDER BY date DESC LIMIT " + offset + ", 10;"; 
 	
 	// Count total results before limit
 	var total = "SELECT COUNT(*) AS total FROM postings WHERE title LIKE '%" + title +
@@ -136,7 +136,7 @@ function resultToObject(result) {
 			experienceLevel: res.experienceLevel,
 			jobType: res.jobType,
 			pay: res.pay,
-			postedDate: res.date,
+			postedDate: res.date.toString(),
 			jobDescription: res.html,
 			link: res.url
 		}
