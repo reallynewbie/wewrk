@@ -11,7 +11,7 @@
             id="btn_findwork"
             class="btn"
           >
-            <b-img src="./assets/magnifying_glass.png" id="magnifyingGlass"></b-img>Find work
+            <font-awesome-icon icon="search" size="lg" class="searchIcon" />Find work
           </b-button>
         </b-input-group-append>
       </b-input-group>
@@ -88,5 +88,10 @@ export default {
 }
 .inputBox {
   border-style: none;
+}
+.searchIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
 }
 </style>

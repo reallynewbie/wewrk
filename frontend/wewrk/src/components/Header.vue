@@ -8,7 +8,7 @@
         <b-nav-item to="/search" class="navbaritem" active-class="active">Job Search</b-nav-item>
 
         <b-nav-item to="/dashboard" class="navbaritem" active-class="active">
-          <b-img id="hearticon" height="13px" width="auto" src="./assets/wewrk_icon_heart.png" />My jobs
+          <font-awesome-icon icon="heart" class="heartIcon" />My jobs
         </b-nav-item>
 
         <b-nav-item class="navbaritem" active-class="active">Login</b-nav-item>
@@ -19,18 +19,18 @@
 
 <script>
 export default {
-  props: {isTransparent: Boolean},
+  props: { isTransparent: Boolean }
 };
 </script>
 
 <style lang="scss" scoped>
 .headerBackground {
   background-color: #166273;
-  
+
   height: 80px;
   width: 100%;
 }
-.headerBackground.transparent{
+.headerBackground.transparent {
   background-color: transparent !important;
 }
 .navbar {
@@ -58,14 +58,19 @@ export default {
   font-weight: 700;
   margin-right: 1vw;
   border: 0;
+  padding-bottom: 20px;
 }
 .nav-link {
   color: #fafafb !important;
   padding-bottom: 10px !important;
-  margin-bottom: -26px !important;
+  margin-bottom: -38px !important;
+  height: 54px;
 }
-#hearticon {
+.heartIcon {
   margin-right: 6px;
+  color: #e72204;
+  width: 18.3px;
+  height: 16px;
 }
 .active {
   border-bottom: 5px solid white;
