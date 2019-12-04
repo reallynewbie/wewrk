@@ -1,6 +1,6 @@
 <template>
   <b-card no-body class="jobCard" v-on:click="makeActive">
-    <div class="lightUp" :class="{active:activeTab == true}" />
+    <div class="lightUp" :class="{lightupActive:activeTab == true}" />
     <div class="card-body">
       <b-card-title>{{jobTitle}}</b-card-title>
       <b-card-sub-title class="subtext">{{companyName}}</b-card-sub-title>
@@ -26,8 +26,8 @@
       </b-card-text>
     </div>
     <div class="icons">
-      <font-awesome-icon icon="heart" class="heartIcon" />
-      <font-awesome-icon icon="times-circle" class="dismissIcon" />
+      <font-awesome-icon icon="heart" class="heartIcon" :class="{heartIconActive:heartActive == true}" v-on:click="clickHeart"/>
+      <font-awesome-icon icon="times-circle" class="dismissIcon" :class="{dismissIconActive:dismissActive == true}" v-on:click="clickDismiss"/>
     </div>
   </b-card>
 </template>
@@ -48,7 +48,9 @@ export default {
       postedDate: this.jobInfo.postedDate,
       closingDate: this.jobInfo.closingDate,
       jobDescription: this.jobInfo.jobDescription,
-      activeTab: false
+      activeTab: false,
+      heartActive: false,
+      dismissActive: false, 
     };
   },
   methods: {
@@ -69,7 +71,13 @@ export default {
     },
     convertDate: function(utcDate) {
       let regDate = new Date(utcDate);
-      return (`${regDate.getMonth()}/${regDate.getDay()}/${regDate.getFullYear()}`)
+      return (`${regDate.getMonth()+1}/${regDate.getUTCDate()}/${regDate.getFullYear()}`)
+    },
+    clickHeart: function() {
+      this.heartActive = !this.heartActive;
+    },
+    clickDismiss: function() {
+      this.dismissActive = !this.dismissActive;
     }
   },
   watch: {}
@@ -80,20 +88,28 @@ export default {
 .heartIcon {
   color: #e8e8e8;
   margin-right: 5px;
+  cursor: pointer;
 }
 
 .heartIcon:hover {
   color: #e72204;
   cursor: pointer;
 }
+.heartIconActive {
+  color: #e72204;
+}
 
 .dismissIcon {
   color: #e8e8e8;
+  cursor: pointer;
 }
 
 .dismissIcon:hover {
   color: #1b1c1d;
   cursor: pointer;
+}
+.dismissIconActive {
+  color: #1b1c1d;
 }
 
 .icons {
@@ -110,7 +126,7 @@ export default {
 .lightUp {
   width: 6px;
 }
-.active {
+.lightupActive {
   background-color: #eed350;
 }
 
