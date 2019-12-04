@@ -19,13 +19,20 @@ async function simpleSearch(criteria) {
             offset: number
         }
     */
-    let request = `/search?${criteria.terms}&offset=${criteria.offset}`;
+    let request = `/search?terms=${criteria.terms}&offset=${criteria.offset}`;
+    console.log(request);
     let results = await myAPI.get(request);
     return results.data;
 }
 
 async function testSearch() {
     let results = await myAPI.get("/search?terms=%20%20&offset=0");
+    //console.log(results.data);
+    return results.data;
+}
+
+async function testComplex() {
+    let results = await myAPI.get("/search?terms=grocery&pay=&type=&experience=&offset=0");
     //console.log(results.data);
     return results.data;
 }
@@ -45,5 +52,6 @@ async function testSearch() {
 export default {
     testFunction,
     simpleSearch,
-    testSearch
+    testSearch,
+    testComplex
 }

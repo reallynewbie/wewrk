@@ -18,7 +18,7 @@
       <div class="col-md-5 postingCards">
         <JobCard v-bind:key="job.jobID" v-bind:jobInfo="job" v-for="job in jobsFound"></JobCard>
       </div>
-       <div class="col-md-7 postingDesc">
+      <div class="col-md-7 postingDesc">
         <JobDescription v-bind:jobInfo="activeCard"></JobDescription>
       </div>
     </div>
@@ -28,6 +28,7 @@
 <script>
 import JobCard from "./JobCard";
 import JobDescription from "./JobDescription";
+// Infinite scroll https://codepen.io/CSWApps/pen/aVoBPW
 
 export default {
   props: {
@@ -68,7 +69,8 @@ export default {
           pay: "$27.75/hr",
           postedDate: "10/29/2019",
           closingDate: "11/30/2019",
-          jobDescription: 'College/CEGEP <br> 7 months to less than 1 year <br> <ul><h2 class="jobSectionHeader"><b>Specific Skills</b></h2><li> Research and evaluate a variety of interactive media software products</li><li> Consult with clients to develop and document Website requirements</li><li> Lead and co-ordinate multidisciplinary teams to develop Website graphics, content, capacity and interactivity</li><li> Source, select and organize information for inclusion and design the appearance, layout and flow of the Website</li><li> Create and optimize content for Website using a variety of graphics, database, animation and other software</li><li> Develop Website architecture and determine hardware and software requirements</li><li> Plan, design, write, modify, integrate and test Web-site related code</li><li> Conduct tests and perform security and quality controls</li><h2 class="jobSectionHeader"><b> Work Conditions and Physical Capabilities</b></h2><li> Attention to detail</li><h2 class="jobSectionHeader"><b> Personal Suitability</b></h2><li> Initiative</li><li> Team player</li><li> Client focus</li><li> Dependability</li><li> Judgement</li><li> Organized</li></ul>',
+          jobDescription:
+            'College/CEGEP <br> 7 months to less than 1 year <br> <ul><h2 class="jobSectionHeader"><b>Specific Skills</b></h2><li> Research and evaluate a variety of interactive media software products</li><li> Consult with clients to develop and document Website requirements</li><li> Lead and co-ordinate multidisciplinary teams to develop Website graphics, content, capacity and interactivity</li><li> Source, select and organize information for inclusion and design the appearance, layout and flow of the Website</li><li> Create and optimize content for Website using a variety of graphics, database, animation and other software</li><li> Develop Website architecture and determine hardware and software requirements</li><li> Plan, design, write, modify, integrate and test Web-site related code</li><li> Conduct tests and perform security and quality controls</li><h2 class="jobSectionHeader"><b> Work Conditions and Physical Capabilities</b></h2><li> Attention to detail</li><h2 class="jobSectionHeader"><b> Personal Suitability</b></h2><li> Initiative</li><li> Team player</li><li> Client focus</li><li> Dependability</li><li> Judgement</li><li> Organized</li></ul>',
           activeTab: false
         },
         {
@@ -81,21 +83,22 @@ export default {
           pay: "$27.75/hr",
           postedDate: "10/29/2019",
           closingDate: "11/30/2019",
-          jobDescription: 'College/CEGEP <br> 7 months to less than 1 year <br> <ul><h2 class="jobSectionHeader"><b>Specific Skills</b></h2><li> Research and evaluate a variety of interactive media software products</li><li> Consult with clients to develop and document Website requirements</li><li> Lead and co-ordinate multidisciplinary teams to develop Website graphics, content, capacity and interactivity</li><li> Source, select and organize information for inclusion and design the appearance, layout and flow of the Website</li><li> Create and optimize content for Website using a variety of graphics, database, animation and other software</li><li> Develop Website architecture and determine hardware and software requirements</li><li> Plan, design, write, modify, integrate and test Web-site related code</li><li> Conduct tests and perform security and quality controls</li><h2 class="jobSectionHeader"><b> Work Conditions and Physical Capabilities</b></h2><li> Attention to detail</li><h2 class="jobSectionHeader"><b> Personal Suitability</b></h2><li> Initiative</li><li> Team player</li><li> Client focus</li><li> Dependability</li><li> Judgement</li><li> Organized</li></ul>',
+          jobDescription:
+            'College/CEGEP <br> 7 months to less than 1 year <br> <ul><h2 class="jobSectionHeader"><b>Specific Skills</b></h2><li> Research and evaluate a variety of interactive media software products</li><li> Consult with clients to develop and document Website requirements</li><li> Lead and co-ordinate multidisciplinary teams to develop Website graphics, content, capacity and interactivity</li><li> Source, select and organize information for inclusion and design the appearance, layout and flow of the Website</li><li> Create and optimize content for Website using a variety of graphics, database, animation and other software</li><li> Develop Website architecture and determine hardware and software requirements</li><li> Plan, design, write, modify, integrate and test Web-site related code</li><li> Conduct tests and perform security and quality controls</li><h2 class="jobSectionHeader"><b> Work Conditions and Physical Capabilities</b></h2><li> Attention to detail</li><h2 class="jobSectionHeader"><b> Personal Suitability</b></h2><li> Initiative</li><li> Team player</li><li> Client focus</li><li> Dependability</li><li> Judgement</li><li> Organized</li></ul>',
           activeTab: false
         }
       ],
       activeCard: {
-          jobID: 12345,
-          jobTitle: "Frontend web application developer",
-          companyName: "Test Company",
-          location: "Edmonton, AB",
-          experienceLevel: "Junior Entry Level",
-          jobType: "Full Time",
-          pay: "$27.75/hr",
-          postedDate: "10/29/2019",
-          closingDate: "11/30/2019",
-          activeTab: false
+        jobID: 12345,
+        jobTitle: "Frontend web application developer",
+        companyName: "Test Company",
+        location: "Edmonton, AB",
+        experienceLevel: "Junior Entry Level",
+        jobType: "Full Time",
+        pay: "$27.75/hr",
+        postedDate: "10/29/2019",
+        closingDate: "11/30/2019",
+        activeTab: false
       }
     };
   },
@@ -103,16 +106,10 @@ export default {
     JobCard,
     JobDescription
   },
-  methods: {
-    test: function(test) {
-      console.log(test);
-      console.log();
-      // console.log(event);
-    }
-  },
+  methods: {},
   watch: {
-    jobsFound: function(newValue, oldValue) {
-      console.log(newValue, oldValue);
+    jobsFound: function() {
+      // console.log(newValue, oldValue);
       this.$forceUpdate();
     }
   }
@@ -133,7 +130,7 @@ export default {
 }
 .results {
   padding-left: 10%;
-  padding-right: 10%;
+  padding-right: 8%;
   height: 88%;
 }
 .overview {

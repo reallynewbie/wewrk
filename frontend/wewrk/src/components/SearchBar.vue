@@ -32,7 +32,7 @@
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
-        <b-button @click="testSearch" class="searchButton">Find work</b-button>
+        <b-button @click="simpleSearch" class="searchButton">Find work</b-button>
       </b-col>
     </b-row>
   </b-container>
@@ -44,6 +44,7 @@ import APIFunctions from "../../services/api";
 export default {
   mounted: function() {
     this.searchValue = this.$route.query.q;
+    this.simpleSearch();
   },
   data() {
     return {
@@ -73,6 +74,22 @@ export default {
   methods: {
     testSearch: async function() {
       let results = await APIFunctions.testSearch();
+      this.$root.$emit("newResults", results);
+    },
+    testComplex: async function() {
+      let results = await APIFunctions.testComplex();
+      this.$root.$emit("newResults", results);
+    },
+    simpleSearch: async function() {
+      
+      let searchTerm = this.searchValue;
+      if (!searchTerm) {
+        searchTerm = "  ";
+      }
+      let results = await APIFunctions.simpleSearch({
+        terms: searchTerm,
+        offset: 0
+      })
       this.$root.$emit("newResults", results);
     }
   }
