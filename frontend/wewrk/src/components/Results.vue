@@ -49,7 +49,10 @@ export default {
       currentDisplayType: "",
       sortOptions: [
         { value: "best", text: "Best Match" },
-        { value: "date", text: "Date Posted" }
+        { value: "date", text: "Date Posted" },
+        { value: "oldest", text: "Oldest" },
+        { value: "deadline", text: "Deadline to apply" },
+        { value: "viewed", text: "Most viewed" },
       ],
       selectedSort: "best",
       jobsFound: [],

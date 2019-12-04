@@ -26,8 +26,13 @@
         ></b-form-select>
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
-      <b-col cols="3">
+      <b-col>
         <h1 class="formHeader">Salary:</h1>
+        <b-form-select plain v-model="salarySelected" :options="salaryOptions" class="customSelect"></b-form-select>
+        <font-awesome-icon icon="sort-down" size="lg" />
+      </b-col>
+      <b-col>
+        <h1 class="formHeader">Distance:</h1>
         <b-form-select plain v-model="salarySelected" :options="salaryOptions" class="customSelect"></b-form-select>
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
@@ -52,22 +57,51 @@ export default {
       jobTypeSelected: null,
       jobTypeOptions: [
         { value: null, text: "- Select -" },
-        { value: "fulltime", text: "Full-Time" },
-        { value: "parttime", text: "Part-Time" }
+        { value: "part-time", text: "Part-Time" },
+        { value: "full-time", text: "Full-Time" },
+        { value: "permanent", text: "Permanent" },
+        { value: "contract", text: "Contract" },
+        { value: "temporary", text: "Temporary" },
+        { value: "freelance", text: "Freelance" }
+        /* DB Has the following
+          'Casual'
+          'Part-time'
+          'Contract'
+          'Temporary'
+          'Commission'
+          'Freelance'
+          'Permanent'
+          'Apprenticeship'
+          'Volunteer'
+          'Fly-In/Fly-Out'
+          'Internship' 
+        */
       ],
       experienceSelected: null,
       experienceOptions: [
         { value: null, text: "- Select -" },
-        { value: "junior", text: "Junior" },
-        { value: "intermediate", text: "Intermediate" },
-        { value: "senior", text: "Senior" }
+        { value: "internship", text: "Internship", disabled: true },
+        { value: "entry level", text: "Entry level" },
+        { value: "associate", text: "Associate", disabled: true },
+        { value: "midsenior", text: "Mid-Senior", disabled: true },
+        { value: "director", text: "Director", disabled: true },
+        { value: "executive", text: "Executive", disabled: true }
       ],
       salarySelected: null,
       salaryOptions: [
         { value: null, text: "- Select -" },
-        { value: "0", text: "< $30,000" },
-        { value: "1", text: "$30,000 - $50,000" },
-        { value: "2", text: "> $50,000" }
+        { value: "0", text: "$50,000+", disabled: true },
+        { value: "1", text: "$70,000+", disabled: true },
+        { value: "2", text: "$90,000+", disabled: true },
+        { value: "3", text: "$110,000+", disabled: true }
+      ],
+      distanceSelected: null,
+      distanceOptions: [
+        { value: null, text: "- Select -" },
+        { value: "0", text: "Less than 25km", disabled: true },
+        { value: "1", text: "25km - 50km", disabled: true },
+        { value: "2", text: "50km - 75km", disabled: true },
+        { value: "3", text: "75km +", disabled: true }
       ]
     };
   },

@@ -47,6 +47,7 @@ export default {};
   padding-right: 14%;
   align-items: flex-end;
   justify-content: center;
+  background-color: #f8f7f0;
 }
 .statSections {
   max-height: 83px;
