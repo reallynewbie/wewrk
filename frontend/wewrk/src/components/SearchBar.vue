@@ -37,7 +37,7 @@
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
-        <b-button @click="simpleSearch" class="searchButton">Find work</b-button>
+        <b-button @click="complexSearch" class="searchButton">Find work</b-button>
       </b-col>
     </b-row>
   </b-container>
@@ -121,6 +121,20 @@ export default {
       }
       let results = await APIFunctions.simpleSearch({
         terms: searchTerm,
+        offset: 0
+      });
+      this.$root.$emit("newResults", results);
+    },
+    complexSearch: async function() {
+      let searchTerm = this.searchValue;
+      if (!searchTerm) {
+        searchTerm = "  ";
+      }
+      let results = await APIFunctions.complexSearch({
+        terms: searchTerm,
+        type: this.jobTypeSelected,
+        pay: this.salarySelected,
+        experience: this.experienceSelected,
         offset: 0
       });
       this.$root.$emit("newResults", results);
