@@ -17,18 +17,17 @@
       <h2>
         Browse job postings from major job sites, all in one place.
         <span id="logos">
-          <!-- Add chevron/  -->
-          <b-img class="img_Logos" src="./assets/wewrk_logo_monster.png" />
-          <b-img class="img_Logos" src="./assets/wewrk_logo_indeed.png" />
-          <b-img class="img_Logos" src="./assets/wewrk_logo_glassdoor.png" />
-          <b-img class="img_Logos" src="./assets/wewrk_logo_monster.png" />
+          <b-img class="img_Logos" src="./assets/wewrk_logo_monster.png" height="45px" width="45px"/>
+          <b-img class="img_Logos" src="./assets/wewrk_logo_indeed.png" height="30px" width="110px"/>
+          <b-img class="img_Logos" src="./assets/glassdoor.png" height="42px" width="140px" />
+          <b-img class="img_Logos" src="./assets/wewrk_logo_linkedin.png" height="50px" width="51px"/>
         </span>
       </h2>
     </div>
     <div class="br-line" />
     <RecentSearches />
     <AboutUs />
-    <!-- Eventually add the area here -->
+    <Stats />
     <Footer />
   </div>
 </template>
@@ -39,10 +38,11 @@ import HomeSearchDiv from "./HomeSearchDiv";
 import AboutUs from "./AboutUs";
 import RecentSearches from "./RecentSearches";
 import Footer from "./Footer";
+import Stats from "./Stats";
 
 // https://stackoverflow.com/questions/45895146/how-to-put-elements-between-two-divs-css-html
 export default {
-  components: { Header, HomeSearchDiv, AboutUs, RecentSearches, Footer}
+  components: { Header, HomeSearchDiv, AboutUs, RecentSearches, Footer, Stats}
 };
 </script>
 
@@ -52,12 +52,13 @@ export default {
   padding-top: 50px;
   margin-left: 11%;
   width: 100%;
+  padding-bottom:43px;
 }
 #logos {
   margin-left: 95px;
 }
 .img_Logos {
-  margin-right: 30px;
+  margin-right: 40px;
 }
 h2 {
   font-family: Rubik;
@@ -94,7 +95,7 @@ h2 {
   left: 0;
 }
 .upperHeader {
-  margin-top: 7%;
+  margin-top: 150px;
   max-width: 303px;
   margin-left: 10%;
   padding-left: 16px;
@@ -117,6 +118,6 @@ h2 {
   margin-left: 11%;
 }
 .br-line {
-  border-bottom: 1px solid whitesmoke;
+  border-bottom: 1px solid rgb(240, 240, 240);
 }
 </style>

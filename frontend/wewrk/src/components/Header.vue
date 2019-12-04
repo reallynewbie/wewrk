@@ -61,7 +61,7 @@ export default {
 }
 .nav-link {
   color: #fafafb !important;
-  padding-bottom: 30px !important;
+  padding-bottom: 10px !important;
   margin-bottom: -26px !important;
 }
 #hearticon {
