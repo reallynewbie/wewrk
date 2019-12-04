@@ -16,9 +16,8 @@
             <li>{{pay ? pay : "Salary not specified"}}</li>
           </ul>
         </div>
-        <!-- Add Faint line for separation -->
         <div class="cardFooter">
-          <h4 class="postedDate">Posted on: {{postedDate}}</h4>
+          <h4 class="postedDate">Posted on: {{convertDate(postedDate)}}</h4>
           <h4 class="closingDate">
             Closing Date:
             <span>{{closingDate ? closingDate : "N/A"}}</span>
@@ -67,6 +66,10 @@ export default {
         jobDescription: this.jobInfo.jobDescription
       });
       this.activeTab = !this.activeTab;
+    },
+    convertDate: function(utcDate) {
+      let regDate = new Date(utcDate);
+      return (`${regDate.getMonth()}/${regDate.getDay()}/${regDate.getFullYear()}`)
     }
   },
   watch: {}
@@ -127,6 +130,7 @@ li {
   font-stretch: normal;
   font-style: normal;
   letter-spacing: normal;
+  padding-bottom: 5px;
 }
 .card-title {
   font-size: 14px;
@@ -141,7 +145,9 @@ li {
   margin-bottom: 8px;
 }
 .cardFooter {
+  border-top: 1px solid rgb(240, 240, 240);
   display: flex;
+  padding-top: 13px;
 }
 .cardFooter > h4 {
   font-size: 12px;

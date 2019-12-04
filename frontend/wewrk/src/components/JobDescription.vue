@@ -11,11 +11,11 @@
       <div class="bulletPoints row">
         <ul class="bullets col-md-3">
           <li>{{location}}</li>
-          <li>{{experienceLevel}}</li>
+          <li>{{experienceLevel ? experienceLevel: "Experience not specified"}}</li>
         </ul>
         <ul class="bullets col-md-3">
-          <li>{{jobType}}</li>
-          <li>{{pay}}</li>
+          <li>{{jobType ? jobType : "Type not specified"}}</li>
+          <li>{{pay ? pay : "Salary not specified"}}</li>
         </ul>
       </div>
       <h3 class="jobDescriptionHeader">Job Description</h3>
