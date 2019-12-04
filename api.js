@@ -37,6 +37,8 @@ app.get("/search", (req, res) =>  {
 
     // handle missing elements
     title = (typeof title === 'undefined') ? '' : title;
+    location = (typeof location === 'undefined') ? '' : location;
+    company = (typeof company === 'undefined') ? '' : company;
     pay = (typeof pay === 'undefined' || pay == '') ? 0 : pay;
     type = (typeof type === 'undefined') ? '' : type;
     experience = (typeof experience === 'undefined') ? '' : experience;
