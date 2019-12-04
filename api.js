@@ -34,6 +34,7 @@ app.get("/search", (req, res) =>  {
     let type = req.query.type;// input from dropdown
     let experience = req.query.experience;
     let offset = req.query.offset;// determined by frontend
+    let sort = req.query.sort;// {}
 
     // handle missing elements
     title = (typeof title === 'undefined') ? '' : title;
@@ -42,8 +43,9 @@ app.get("/search", (req, res) =>  {
     pay = (typeof pay === 'undefined' || pay == '') ? 0 : pay;
     type = (typeof type === 'undefined') ? '' : type;
     experience = (typeof experience === 'undefined') ? '' : experience;
-
-    wrkDB.selectPosting(wrkDB.pool, title, location, company, pay, type, experience, offset, function(err, resultObject) {
+    sort = (typeof sort === 'undefined') ? 'relevance' : sort;
+console.log(sort);
+    wrkDB.selectPosting(wrkDB.pool, title, location, company, pay, type, experience, sort, offset, function(err, resultObject) {
         if (err) console.log(err);
         res.send(JSON.stringify(resultObject))
     });

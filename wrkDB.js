@@ -47,7 +47,7 @@ function insertPosting(pool, jobObject) {
  * This version requires distinct search fields.
  * Callback result is an array containing the returned rows
  */
-function selectPosting(pool, title, location, company, pay, type, experience, offset, callback) {
+function selectPosting(pool, title, location, company, pay, type, experience, sort, offset, callback) {
 
 	// Escape search terms if not blank
 	if (title != '') title = mysql.escape(title).replace(/'/g, "");
@@ -56,6 +56,7 @@ function selectPosting(pool, title, location, company, pay, type, experience, of
 	if (pay != '') pay = mysql.escape(pay).replace(/'/g, "");
 	if (type != '') type = mysql.escape(type).replace(/'/g, "");
 	if (experience != '') experience = mysql.escape(experience).replace(/'/g, "");
+	if (sort === 'relevance') sort = "relTitle*1 + relLocation*1 + relCompany*1";
 
 	// Build query using search terms
 	var select = "SELECT * FROM postings WHERE title LIKE '%" + title +
@@ -64,7 +65,8 @@ function selectPosting(pool, title, location, company, pay, type, experience, of
 	 "%' AND pay >= " + pay +
 	 " AND jobType LIKE '%" + type +
 	 "%' AND experienceLevel LIKE '%" + experience +
-	 "%' ORDER BY date DESC LIMIT " + offset + ", 10;"; 
+	 "%' ORDER BY " + sort +
+	 " DESC LIMIT " + offset + ", 10;"; 
 	
 	// Count total results before limit
 	var total = "SELECT COUNT(*) AS total FROM postings WHERE title LIKE '%" + title +
