@@ -65,8 +65,14 @@ p.aboutUs-para {
   padding-left: 21px;
   padding-right: 21px;
 }
+.btn:active, .btn:focus {
+  background-color: #166273;
+}
 .joinButton:hover {
   background-color: #95b7bf;
+}
+.joinButton:active, .joinButton:focus {
+  background-color: #166273;
 }
 
 #emWrk {

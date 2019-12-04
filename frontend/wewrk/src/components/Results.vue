@@ -16,7 +16,7 @@
     </div>
     <div class="results row no-gutters">
       <div class="col-md-5 postingCards">
-        <JobCard v-bind:key="job.jobID" v-bind:jobInfo="job" v-for="job in jobsFound"></JobCard>
+        <JobCard :key="job.jobID" :jobInfo="job" :index="index" :activeCard="activeCard" @changeActiveCard="updateActiveCard" v-for="(job, index) in jobsFound" ></JobCard>
       </div>
       <div class="col-md-7 postingDesc">
         <JobDescription v-bind:jobInfo="activeCard"></JobDescription>
@@ -35,6 +35,7 @@ export default {
   mounted: function() {
     this.searchTerm = this.$route.query.q;
     this.$root.$on("newResults", query => {
+      console.log("myquery");
       console.log(query);
       this.jobsFound = query.results;
       this.resultsNum = query.totalResults;
@@ -56,14 +57,19 @@ export default {
       ],
       selectedSort: "best",
       jobsFound: [],
-      activeCard: {}
+      activeCard: 0,
     };
   },
   components: {
     JobCard,
     JobDescription
   },
-  methods: {},
+  methods: {
+    updateActiveCard(newCardIndex) {
+      console.log(newCardIndex);
+      this.activeCard = newCardIndex;
+    }
+  },
   watch: {
     jobsFound: function() {
       // console.log(newValue, oldValue);

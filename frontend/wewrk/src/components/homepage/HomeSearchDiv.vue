@@ -85,6 +85,10 @@ export default {
   width: 170px;
   border-style: none;
   padding-top: 23px;
+  cursor: pointer;
+}
+#btn_findwork:hover {
+  background-color: #f2df7f;
 }
 .inputBox {
   border-style: none;
@@ -93,5 +97,6 @@ export default {
   width: 20px;
   height: 20px;
   margin-right: 4px;
+  
 }
 </style>

@@ -34,8 +34,12 @@
 
 <script>
 export default {
-  props: ["jobInfo"],
-  computed: {},
+  props: ["jobInfo", "index", "activeCard"],
+  computed: {
+    activeTab: function() {
+      return (this.$props.activeCard === this.$props.index);
+    }
+  },
   data() {
     return {
       jobID: this.jobInfo.jobID,
@@ -48,9 +52,10 @@ export default {
       postedDate: this.jobInfo.postedDate,
       closingDate: this.jobInfo.closingDate,
       jobDescription: this.jobInfo.jobDescription,
-      activeTab: false,
+      // activeTab: false,
       heartActive: false,
-      dismissActive: false, 
+      dismissActive: false,
+      myIndex: 0
     };
   },
   methods: {
@@ -67,6 +72,7 @@ export default {
         closingDate: this.jobInfo.closingDate,
         jobDescription: this.jobInfo.jobDescription
       });
+      this.$emit("changeActiveCard", this.$props.index)
       this.activeTab = !this.activeTab;
     },
     convertDate: function(utcDate) {
@@ -80,7 +86,6 @@ export default {
       this.dismissActive = !this.dismissActive;
     }
   },
-  watch: {}
 };
 </script>
 
