@@ -4,7 +4,7 @@
       <b-img width="735px" height="575px" src="./assets/wewrk_aboutus.jpg" />
     </div>
     <div class="aboutUs-desc">
-      <h1>About Us</h1>
+      <h1>About us</h1>
       <p class="aboutUs-para">
         we<strong id="emWrk">wrk</strong> is a one-stop job search website. We have agreements in place with the leading job posting websites,
         so we aggregate all of their listings here, in one place. Having everything in one place means employers

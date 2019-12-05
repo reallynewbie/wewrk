@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="results row no-gutters">
-      <div class="col-md-5 postingCards">
+      <div class="col-md-5 postingCards" id="infinite-list">
         <JobCard
           :key="job.jobID"
           :jobInfo="job"
@@ -35,19 +35,30 @@
 <script>
 import JobCard from "./JobCard";
 import JobDescription from "./JobDescription";
+import APIFunctions from "../../services/api";
 // Infinite scroll https://codepen.io/CSWApps/pen/aVoBPW
 
 export default {
   props: {},
   mounted: function() {
     this.searchTerm = this.$route.query.q;
-    this.$root.$on("newResults", query => {
-      console.log("myquery");
+    this.$root.$on("newResults", (query, criteria) => {
       console.log(query);
+      console.log(criteria);
       this.jobsFound = query.results;
       this.resultsNum = query.totalResults;
-      this.activeCard = {};
+      this.activeCard = 0;
+      this.currentOffset = 10;
+      this.currentSearchCriteria = criteria;
+      this.currentSearchCriteria.offset = 10;
     });
+
+    const listElement = document.querySelector('#infinite-list');
+    listElement.addEventListener('scroll', () => {
+      if(listElement.scrollTop + listElement.clientHeight >= listElement.scrollHeight) {
+        this.loadMore();
+      }
+    })
   },
   data() {
     return {
@@ -64,7 +75,10 @@ export default {
       ],
       selectedSort: "best",
       jobsFound: [],
-      activeCard: 0
+      activeCard: 0,
+      currentOffset: 0,
+      currentSearchCriteria: {},
+      loading: false
     };
   },
   components: {
@@ -75,6 +89,15 @@ export default {
     updateActiveCard(newCardIndex) {
       console.log(newCardIndex);
       this.activeCard = newCardIndex;
+    },
+    loadMore: async function() {
+      this.loading= true;
+      let apiResults = await APIFunctions.complexSearch(this.currentSearchCriteria);
+      console.log(apiResults);
+      this.jobsFound.push(...apiResults.results);
+      console.log(this.jobsFound)
+      this.currentOffset += 10;
+      this.currentSearchCriteria.offset += 10;
     }
   },
   watch: {

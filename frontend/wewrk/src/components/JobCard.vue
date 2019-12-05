@@ -20,7 +20,7 @@
           <font-awesome-icon icon="clock" class="clockIcon" />
           <h4 class="postedDate">Posted on: {{convertDate(postedDate)}}</h4>
           <h4 class="closingDate">
-            Closing Date:
+            Closing date:
             <span>{{closingDate ? closingDate : "N/A"}}</span>
           </h4>
         </div>
@@ -53,7 +53,6 @@ export default {
       postedDate: this.jobInfo.postedDate,
       closingDate: this.jobInfo.closingDate,
       jobDescription: this.jobInfo.jobDescription,
-      // activeTab: false,
       heartActive: false,
       dismissActive: false,
       myIndex: 0
