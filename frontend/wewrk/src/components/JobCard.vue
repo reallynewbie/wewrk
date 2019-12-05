@@ -4,7 +4,6 @@
     <div class="card-body">
       <b-card-title>{{jobTitle}}</b-card-title>
       <b-card-sub-title class="subtext">{{companyName}}</b-card-sub-title>
-      <!-- Need more space between -->
       <b-card-text>
         <div class="bulletPoints row">
           <ul class="bullets col">
@@ -36,6 +35,24 @@
 <script>
 export default {
   props: ["jobInfo", "index", "activeCard"],
+  created: function() {
+    if (this.$props.index === 0) {
+      console.log('hello?');
+      this.$root.$emit("clickedCard", {
+        jobID: this.jobInfo.jobID,
+        jobTitle: this.jobInfo.jobTitle,
+        companyName: this.jobInfo.companyName,
+        location: this.jobInfo.location,
+        experienceLevel: this.jobInfo.experienceLevel,
+        jobType: this.jobInfo.jobType,
+        pay: this.jobInfo.pay,
+        postedDate: this.jobInfo.postedDate,
+        closingDate: this.jobInfo.closingDate,
+        jobDescription: this.jobInfo.jobDescription,
+        link: this.jobInfo.link,
+      });
+    }
+  },
   computed: {
     activeTab: function() {
       return (this.$props.activeCard === this.$props.index);
