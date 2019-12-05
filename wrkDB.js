@@ -136,11 +136,12 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 		ORDER BY date DESC
 		LIMIT ${offset}, 10;`
 		total = 
-		`SELECT COUNT (*) FROM postings
+		`SELECT COUNT (*) AS total FROM postings
 		WHERE jobType like '%${type}%'
 		and experienceLevel like '%${experience}%';`
 	} 
 	console.log(select);
+	console.log("Total:"+total);
 
 	pool.query(select + total , function(err, result) {
 		if (err) return callback(err);
