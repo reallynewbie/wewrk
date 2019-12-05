@@ -53,12 +53,17 @@ export default {
       this.searchTerm = criteria.terms;
     });
 
-    const listElement = document.querySelector('#infinite-list');
-    listElement.addEventListener('scroll', () => {
-      if(listElement.scrollTop + listElement.clientHeight >= listElement.scrollHeight) {
-        this.loadMore();
+    const listElement = document.querySelector("#infinite-list");
+    listElement.addEventListener("scroll", () => {
+      if (this.resultsNum > this.currentOffset) {
+        if (
+          listElement.scrollTop + listElement.clientHeight >=
+          listElement.scrollHeight
+        ) {
+          this.loadMore();
+        }
       }
-    })
+    });
   },
   data() {
     return {
@@ -77,8 +82,7 @@ export default {
       jobsFound: [],
       activeCard: 0,
       currentOffset: 0,
-      currentSearchCriteria: {},
-      loading: false
+      currentSearchCriteria: {}
     };
   },
   components: {
@@ -91,11 +95,12 @@ export default {
       this.activeCard = newCardIndex;
     },
     loadMore: async function() {
-      this.loading= true;
-      let apiResults = await APIFunctions.complexSearch(this.currentSearchCriteria);
+      let apiResults = await APIFunctions.complexSearch(
+        this.currentSearchCriteria
+      );
       console.log(apiResults);
       this.jobsFound.push(...apiResults.results);
-      console.log(this.jobsFound)
+      console.log(this.jobsFound);
       this.currentOffset += 10;
       this.currentSearchCriteria.offset += 10;
     }
@@ -217,6 +222,6 @@ select + svg {
   cursor: pointer;
 }
 .gridIcon:hover {
-  color:#166273;
+  color: #166273;
 }
 </style>
