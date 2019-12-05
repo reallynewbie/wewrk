@@ -117,7 +117,7 @@ export default {
     simpleSearch: async function() {
       let searchTerm = this.searchValue;
       if (!searchTerm) {
-        searchTerm = "  ";
+        searchTerm = " ";
       }
       let criteria = {
         terms: searchTerm,
@@ -129,7 +129,7 @@ export default {
     complexSearch: async function() {
       let searchTerm = this.searchValue;
       if (!searchTerm) {
-        searchTerm = "  ";
+        searchTerm = " ";
       }
       let criteria = {
         terms: searchTerm,
