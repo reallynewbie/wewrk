@@ -41,7 +41,6 @@ import APIFunctions from "../../services/api";
 export default {
   props: {},
   mounted: function() {
-    this.searchTerm = this.$route.query.q;
     this.$root.$on("newResults", (query, criteria) => {
       console.log(query);
       console.log(criteria);
@@ -51,6 +50,7 @@ export default {
       this.currentOffset = 10;
       this.currentSearchCriteria = criteria;
       this.currentSearchCriteria.offset = 10;
+      this.searchTerm = criteria.terms;
     });
 
     const listElement = document.querySelector('#infinite-list');
@@ -162,6 +162,7 @@ export default {
 }
 .displayType {
   padding-bottom: 10px;
+  padding-right: 26px;
 }
 .searchTermLocation {
   font-family: Rubik;
@@ -212,5 +213,10 @@ select + svg {
   color: #95b7bf;
   width: 22px;
   height: 22px;
+  margin-left: 16px;
+  cursor: pointer;
+}
+.gridIcon:hover {
+  color:#166273;
 }
 </style>

@@ -11,14 +11,14 @@ async function testFunction() {
 }
 
 async function simpleSearch(criteria) {
-    let request = `/search?terms=${criteria.terms}&offset=${criteria.offset}`;
+    let request = `/search?terms=%20${criteria.terms}&offset=${criteria.offset}`;
     console.log(request);
     let results = await myAPI.get(request);
     return results.data;
 }
 
 async function complexSearch(criteria) {
-    let request = `/search?terms=${criteria.terms}${criteria.pay ? "&pay=" + criteria.pay : ""}${criteria.experience ? "&experience=" + criteria.experience : ""}${criteria.type ? "&type=" + criteria.type : ""}${criteria.sort ? "&sort=" + criteria.sort : ""}&offset=${criteria.offset}`;
+    let request = `/search?terms=%20${criteria.terms}${criteria.pay ? "&pay=" + criteria.pay : ""}${criteria.experience ? "&experience=" + criteria.experience : ""}${criteria.type ? "&type=" + criteria.type : ""}${criteria.sort ? "&sort=" + criteria.sort : ""}&offset=${criteria.offset}`;
     console.log(request);
     let results = await myAPI.get(request);
     return results.data;

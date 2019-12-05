@@ -3,7 +3,7 @@
     <div class="container jobDescriptionContainer">
       <div class="row">
         <div class="col-8 jobTitle">{{jobTitle}}</div>
-        <a class="offset-md-2 col-md-2 applyButton" href="https://www.indeed.com/" target="_blank">
+        <a class="offset-md-2 col-md-2 applyButton" :href="'https://www.indeed.ca'+link" target="_blank">
           <h1 class="align-middle">Apply now</h1>
         </a>
       </div>
@@ -40,6 +40,7 @@ export default {
       this.postedDate = newPosting.postedDate;
       this.closingDate = newPosting.closingDate;
       this.jobDescription = newPosting.jobDescription;
+      this.link = newPosting.link;
       console.log(this.jobID);
     });
   },
@@ -54,7 +55,8 @@ export default {
       pay: this.jobInfo.pay,
       postedDate: this.jobInfo.postedDate,
       closingDate: this.jobInfo.closingDate,
-      jobDescription: this.jobInfo.jobDescription
+      jobDescription: this.jobInfo.jobDescription,
+      link: this.jobInfo.link,
     };
   }
 };
