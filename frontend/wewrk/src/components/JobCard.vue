@@ -70,7 +70,8 @@ export default {
         pay: this.jobInfo.pay,
         postedDate: this.jobInfo.postedDate,
         closingDate: this.jobInfo.closingDate,
-        jobDescription: this.jobInfo.jobDescription
+        jobDescription: this.jobInfo.jobDescription,
+        link: this.jobInfo.link,
       });
       this.$emit("changeActiveCard", this.$props.index)
       this.activeTab = !this.activeTab;
@@ -158,7 +159,7 @@ li {
   font-weight: bold;
   line-height: 1.29;
   color: rgba(0, 0, 0, 0.87);
-  margin-bottom: 3px;
+  margin-bottom: 6px;
 }
 .subtext {
   font-size: 14px;

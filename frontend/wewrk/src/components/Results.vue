@@ -41,7 +41,6 @@ import APIFunctions from "../../services/api";
 export default {
   props: {},
   mounted: function() {
-    this.searchTerm = this.$route.query.q;
     this.$root.$on("newResults", (query, criteria) => {
       console.log(query);
       console.log(criteria);
@@ -51,6 +50,7 @@ export default {
       this.currentOffset = 10;
       this.currentSearchCriteria = criteria;
       this.currentSearchCriteria.offset = 10;
+      this.searchTerm = criteria.terms;
     });
 
     const listElement = document.querySelector('#infinite-list');

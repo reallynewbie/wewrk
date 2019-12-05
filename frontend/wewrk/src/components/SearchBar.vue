@@ -3,7 +3,7 @@
     <b-row align-v="end" class="searchRow">
       <b-col cols="4">
         <h1 class="formHeader">Search by job keyword, company, or location</h1>
-        <b-form-input type="search" v-model="searchValue" class="customInput"></b-form-input>
+        <b-form-input @keyup.enter="complexSearch" type="search" v-model="searchValue" class="customInput"></b-form-input>
         <font-awesome-icon icon="search" class="searchIcon" size="lg" />
       </b-col>
       <b-col>
@@ -140,6 +140,7 @@ export default {
       }
       let results = await APIFunctions.complexSearch(criteria);
       this.$root.$emit("newResults", results, criteria);
+      this.$router.push({ path: "/search", query: { q: this.searchValue } });
     }
   }
 };
