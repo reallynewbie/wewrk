@@ -34,6 +34,7 @@ function checkExists(pool, word, callback) {
 }
 
 function findLocation(pool, words, callback) {
+	console.log("Words: " + words);
 	var sql = '';
 	words.forEach(function(value, i) {
 		sql += "SELECT posting_id FROM postings WHERE location LIKE '%" + value + "%' LIMIT 1;"
@@ -44,12 +45,13 @@ function findLocation(pool, words, callback) {
 		var terms = [];
 		var location;
 		result.forEach(function(value, i) {
+			console.log("Value: " + value + "Length: " + value.length);
 			if (value.length == 0) {
-				console.log(false + i + value);
+				console.log("false" + i + value);
 				terms.push(words[i]);
 			}
 			else if (value.length == 1) {
-				console.log(true + i + value);
+				console.log("true" + i + value);
 				location = words[i];
 			}
 		});
@@ -90,6 +92,7 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 	console.log(terms);
 	console.log("Location: "+location);
 	var locOrder = (location == '') ? '>=' : '>';
+	var titleOrder = (terms == '') ? '>=' : '>';
 
 	// Build query using search terms
 	var select = `SELECT * FROM
@@ -101,14 +104,13 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 		FROM postings
 		where
 			MATCH(title, location, company)
-			AGAINST('${terms}${location}')
+			AGAINST('${terms} ${location}')
 		ORDER BY relTitle*1 + relLocation*1 + relCompany*1${sort} DESC
 	) as t 
-	where relTitle > 0 and relLocation ${locOrder} 0 and relCompany >= 0
+	where relTitle ${titleOrder} 0 and relLocation ${locOrder} 0 and relCompany >= 0
 	and jobType like '%${type}%'
 	and experienceLevel like '%${experience}%'
 	limit ${offset}, 10;`
-	console.log(select);
 
 	var total = `SELECT Count(*) AS total FROM
 	(
@@ -119,13 +121,26 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 		FROM postings
 		where
 			MATCH(title, location, company)
-			AGAINST('${terms}${location}')
+			AGAINST('${terms} ${location}')
 		ORDER BY relTitle*1 + relLocation*1 + relCompany*1${sort} DESC
 	) as t 
-	where relTitle > 0 and relLocation ${locOrder} 0 and relCompany >= 0
+	where relTitle ${titleOrder} 0 and relLocation ${locOrder} 0 and relCompany >= 0
 	and jobType like '%${type}%'
 	and experienceLevel like '%${experience}%';`
 	
+	if (terms == '' && location == '') {
+		select = 
+		`SELECT * FROM postings
+		WHERE jobType like '%${type}%'
+		and experienceLevel like '%${experience}%'
+		ORDER BY date DESC
+		LIMIT ${offset}, 10;`
+		total = 
+		`SELECT COUNT (*) FROM postings
+		WHERE jobType like '%${type}%'
+		and experienceLevel like '%${experience}%';`
+	} 
+	console.log(select);
 
 	pool.query(select + total , function(err, result) {
 		if (err) return callback(err);
