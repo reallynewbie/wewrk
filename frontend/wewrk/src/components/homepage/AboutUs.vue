@@ -4,10 +4,9 @@
       <b-img width="735px" height="575px" src="./assets/wewrk_aboutus.jpg" />
     </div>
     <div class="aboutUs-desc">
-      <h1>About Us</h1>
+      <h1>About us</h1>
       <p class="aboutUs-para">
-        we
-        <strong id="emWrk">wrk</strong> is a one-stop job search website. We have agreements in place with the leading job posting websites,
+        we<strong id="emWrk">wrk</strong> is a one-stop job search website. We have agreements in place with the leading job posting websites,
         so we aggregate all of their listings here, in one place. Having everything in one place means employers
         have a better chance of finding their ideal employee and vice versa. If you’re a job posting website who hasn’t
         signed up yet, let’s get started! We would love to have you as a service partner to expand our sources.
@@ -72,7 +71,7 @@ p.aboutUs-para {
   background-color: #95b7bf;
 }
 .joinButton:active, .joinButton:focus {
-  background-color: #166273;
+  background-color: #166273 !important;
 }
 
 #emWrk {

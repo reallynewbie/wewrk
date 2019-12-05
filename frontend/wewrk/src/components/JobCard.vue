@@ -17,9 +17,10 @@
           </ul>
         </div>
         <div class="cardFooter">
+          <font-awesome-icon icon="clock" class="clockIcon" />
           <h4 class="postedDate">Posted on: {{convertDate(postedDate)}}</h4>
           <h4 class="closingDate">
-            Closing Date:
+            Closing date:
             <span>{{closingDate ? closingDate : "N/A"}}</span>
           </h4>
         </div>
@@ -52,7 +53,6 @@ export default {
       postedDate: this.jobInfo.postedDate,
       closingDate: this.jobInfo.closingDate,
       jobDescription: this.jobInfo.jobDescription,
-      // activeTab: false,
       heartActive: false,
       dismissActive: false,
       myIndex: 0
@@ -164,6 +164,7 @@ li {
   font-size: 14px;
   color: rgba(0, 0, 0, 0.87) !important;
   margin-bottom: 8px;
+  font-weight: normal;
 }
 .cardFooter {
   border-top: 1px solid rgb(240, 240, 240);
@@ -179,5 +180,11 @@ h4 > span {
   font-size: 12px;
   font-weight: bold;
   color: #e72204;
+}
+.clockIcon {
+  margin-top: 4px;
+  height: 8.8px;
+  width: 8.8px;
+  margin-right: 4.2px;
 }
 </style>

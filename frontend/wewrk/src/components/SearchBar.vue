@@ -7,7 +7,7 @@
         <font-awesome-icon icon="search" class="searchIcon" size="lg" />
       </b-col>
       <b-col>
-        <h1 class="formHeader">Job Type:</h1>
+        <h1 class="formHeader">Job type</h1>
         <b-form-select
           plain
           v-model="jobTypeSelected"
@@ -17,7 +17,7 @@
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
-        <h1 class="formHeader">Experience Level:</h1>
+        <h1 class="formHeader">Experience level</h1>
         <b-form-select
           plain
           v-model="experienceSelected"
@@ -27,12 +27,12 @@
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
-        <h1 class="formHeader">Salary:</h1>
+        <h1 class="formHeader">Salary</h1>
         <b-form-select plain v-model="salarySelected" :options="salaryOptions" class="customSelect"></b-form-select>
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
-        <h1 class="formHeader">Distance:</h1>
+        <h1 class="formHeader">Distance</h1>
         <b-form-select plain v-model="salarySelected" :options="salaryOptions" class="customSelect"></b-form-select>
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
@@ -57,8 +57,8 @@ export default {
       jobTypeSelected: null,
       jobTypeOptions: [
         { value: null, text: "- Select -" },
-        { value: "part-time", text: "Part-Time" },
-        { value: "full-time", text: "Full-Time" },
+        { value: "part-time", text: "Part-time" },
+        { value: "full-time", text: "Full-time" },
         { value: "permanent", text: "Permanent" },
         { value: "contract", text: "Contract" },
         { value: "temporary", text: "Temporary" },
@@ -119,25 +119,27 @@ export default {
       if (!searchTerm) {
         searchTerm = "  ";
       }
-      let results = await APIFunctions.simpleSearch({
+      let criteria = {
         terms: searchTerm,
         offset: 0
-      });
-      this.$root.$emit("newResults", results);
+      }
+      let results = await APIFunctions.complexSearch(criteria);
+      this.$root.$emit("newResults", results, criteria);
     },
     complexSearch: async function() {
       let searchTerm = this.searchValue;
       if (!searchTerm) {
         searchTerm = "  ";
       }
-      let results = await APIFunctions.complexSearch({
+      let criteria = {
         terms: searchTerm,
         type: this.jobTypeSelected,
         pay: this.salarySelected,
         experience: this.experienceSelected,
         offset: 0
-      });
-      this.$root.$emit("newResults", results);
+      }
+      let results = await APIFunctions.complexSearch(criteria);
+      this.$root.$emit("newResults", results, criteria);
     }
   }
 };
@@ -211,7 +213,7 @@ p {
 }
 .searchButton:active,
 .searchButton:focus {
-  background-color: #166273;
+  background-color: #166273 !important;
 }
 .searchIcon {
   float: right;
