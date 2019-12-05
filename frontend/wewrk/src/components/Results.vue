@@ -162,6 +162,7 @@ export default {
 }
 .displayType {
   padding-bottom: 10px;
+  padding-right: 26px;
 }
 .searchTermLocation {
   font-family: Rubik;
@@ -212,5 +213,10 @@ select + svg {
   color: #95b7bf;
   width: 22px;
   height: 22px;
+  margin-left: 16px;
+  cursor: pointer;
+}
+.gridIcon:hover {
+  color:#166273;
 }
 </style>

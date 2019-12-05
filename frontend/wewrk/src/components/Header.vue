@@ -66,6 +66,9 @@ export default {
   margin-bottom: -38px !important;
   height: 54px;
 }
+.nav-link:hover {
+  border-bottom: 5px solid white;
+}
 .heartIcon {
   margin-right: 6px;
   color: #e72204;
