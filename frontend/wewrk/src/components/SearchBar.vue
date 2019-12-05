@@ -57,8 +57,8 @@ export default {
       jobTypeSelected: null,
       jobTypeOptions: [
         { value: null, text: "- Select -" },
-        { value: "part-time", text: "Part-Time" },
-        { value: "full-time", text: "Full-Time" },
+        { value: "part-time", text: "Part-time" },
+        { value: "full-time", text: "Full-time" },
         { value: "permanent", text: "Permanent" },
         { value: "contract", text: "Contract" },
         { value: "temporary", text: "Temporary" },
@@ -211,7 +211,7 @@ p {
 }
 .searchButton:active,
 .searchButton:focus {
-  background-color: #166273;
+  background-color: #166273 !important;
 }
 .searchIcon {
   float: right;

@@ -5,7 +5,7 @@
         <b-img height="auto" width="130px" src="./assets/wewrk_logo_white.png" />
       </b-navbar-brand>
       <b-navbar-nav class="navbaritems ml-auto">
-        <b-nav-item to="/search" class="navbaritem" active-class="active">Job Search</b-nav-item>
+        <b-nav-item to="/search" class="navbaritem" active-class="active">Job search</b-nav-item>
 
         <b-nav-item to="/dashboard" class="navbaritem" active-class="active">
           <font-awesome-icon icon="heart" class="heartIcon" />My jobs

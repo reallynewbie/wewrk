@@ -6,7 +6,7 @@
     <div class="footer links">
       <div class="footer siteMap">
         <div class="siteMapSection">
-          <h2>Job Seekers</h2>
+          <h2>Job seekers</h2>
           <ul>
             <li>Find jobs</li>
             <li>Career plan</li>

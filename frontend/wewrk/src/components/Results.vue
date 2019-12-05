@@ -16,7 +16,14 @@
     </div>
     <div class="results row no-gutters">
       <div class="col-md-5 postingCards">
-        <JobCard :key="job.jobID" :jobInfo="job" :index="index" :activeCard="activeCard" @changeActiveCard="updateActiveCard" v-for="(job, index) in jobsFound" ></JobCard>
+        <JobCard
+          :key="job.jobID"
+          :jobInfo="job"
+          :index="index"
+          :activeCard="activeCard"
+          @changeActiveCard="updateActiveCard"
+          v-for="(job, index) in jobsFound"
+        ></JobCard>
       </div>
       <div class="col-md-7 postingDesc">
         <JobDescription v-bind:jobInfo="activeCard"></JobDescription>
@@ -49,15 +56,15 @@ export default {
       currentSortType: "",
       currentDisplayType: "",
       sortOptions: [
-        { value: "best", text: "Best Match" },
-        { value: "date", text: "Date Posted" },
+        { value: "best", text: "Best match" },
+        { value: "date", text: "Newest" },
         { value: "oldest", text: "Oldest" },
         { value: "deadline", text: "Deadline to apply" },
-        { value: "viewed", text: "Most viewed" },
+        { value: "viewed", text: "Most viewed" }
       ],
       selectedSort: "best",
       jobsFound: [],
-      activeCard: 0,
+      activeCard: 0
     };
   },
   components: {
@@ -90,11 +97,16 @@ export default {
   height: 60px;
   margin-bottom: 5px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  position: relative;
+  z-index: 5;
 }
 .results {
   padding-left: 10%;
   padding-right: 8%;
   height: 88%;
+  position: relative;
+  z-index: 3;
+  top: -5px;
 }
 .overview {
   text-align: left;
@@ -155,6 +167,7 @@ export default {
   overflow-y: auto;
   height: 100%;
   padding-right: 0;
+  z-index: -1;
 }
 .postingDesc {
   height: 100%;
