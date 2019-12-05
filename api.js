@@ -20,21 +20,27 @@ app.get("/queryExample", (req, res) => {
     res.send("Hello, I received " + testQuery);  // Sending back a string, so no need to use stringify since I'm not sending an object
 })
 
-app.get("/search", (req, res) =>  {
+app.get("/search", async (req, res) =>  {
     console.log("Serving search");
 
     // grab elements from query
     let terms = req.query.terms.split(' ');// input from search bar
+    
+    wrkDB.findLocation(wrkDB.pool, terms, function(err, terms, location) {
+        if (err) throw err;
+        console.log(terms, location);
+    
+
     //TODO: implement multi-field search, currently assuming terms contains 'title%20location%20company' ('%20%20' for empty search bar)
     // Each field can be blank but spaces are needed, eg. 'location%20company' wont work but '%20location%20company' will
     let title = terms[0];
-    let location = terms[1];
+    //let location = terms[1];
     let company = terms[2];
     let pay = req.query.pay;// input from dropdown
     let type = req.query.type;// input from dropdown
     let experience = req.query.experience;
     let offset = req.query.offset;// determined by frontend
-    let sort = req.query.sort;// {}
+    let sort = req.query.sort;// {sort, relevance, undefined}
 
     // handle missing elements
     title = (typeof title === 'undefined') ? '' : title;
@@ -44,10 +50,11 @@ app.get("/search", (req, res) =>  {
     type = (typeof type === 'undefined') ? '' : type;
     experience = (typeof experience === 'undefined') ? '' : experience;
     sort = (typeof sort === 'undefined') ? 'relevance' : sort;
-console.log(sort);
+
     wrkDB.selectPosting(wrkDB.pool, title, location, company, pay, type, experience, sort, offset, function(err, resultObject) {
         if (err) console.log(err);
         res.send(JSON.stringify(resultObject))
+    });
     });
 })
 

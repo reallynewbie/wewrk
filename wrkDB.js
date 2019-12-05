@@ -24,6 +24,40 @@ function getDate(){
 	return date;
 }
 
+function checkExists(pool, word, callback) {
+	word = mysql.escape(word).replace(/'/g, "");
+	var sql = "SELECT posting_id FROM postings WHERE location LIKE '%" + word + "%' LIMIT 1"
+	pool.query(sql, function(err, result) {
+		if (err) return callback(err);
+		callback(null, result.length);
+	});
+}
+
+function findLocation(pool, words, callback) {
+	var sql = '';
+	words.forEach(function(value, i) {
+		sql += "SELECT posting_id FROM postings WHERE location LIKE '%" + value + "%' LIMIT 1;"
+		console.log(i + value);
+	});
+	pool.query(sql, function(err, result) {
+		if (err) return callback(err);
+		var terms = [];
+		var location;
+		result.forEach(function(value, i) {
+			if (value.length == 0) {
+				console.log(false + i + value);
+				terms.push(words[i]);
+			}
+			else if (value.length == 1) {
+				console.log(true + i + value);
+				location = words[i];
+			}
+		});
+		callback(null, terms, location);
+	})
+	console.log(sql);
+}
+
 /* Inserts a jobObject into the mySql database, printing the insertID if successful
  */
 function insertPosting(pool, jobObject) {
@@ -151,7 +185,7 @@ function resultToObject(result) {
 		excludedPay: result[3][0].exPay,
 		excludedExperience: result[4][0].exExperience
 	}
-	console.log(resultObject);
+	//console.log(resultObject);
 	return resultObject;
 }
 
@@ -161,5 +195,7 @@ module.exports = {
 	selectPosting,
 	resultToObject,
 	getDate,
+	checkExists,
+	findLocation,
 	pool
 };
