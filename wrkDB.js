@@ -76,6 +76,65 @@ function insertPosting(pool, jobObject) {
 	    });
     }
 
+
+function selectPostingAdvanced(pool, terms, location, pay, type, experience, sort, offset, callback) {
+
+	// Escape search terms if not blank
+	if (location != '') location = mysql.escape(location).replace(/'/g, "");
+	if (pay != '') pay = mysql.escape(pay).replace(/'/g, "");
+	if (type != '') type = mysql.escape(type).replace(/'/g, "");
+	if (experience != '') experience = mysql.escape(experience).replace(/'/g, "");
+	if (sort === 'relevance') sort = "";
+	if (sort === 'date') sort = ", date"
+	terms = terms.join(" ")
+	console.log(terms);
+	console.log("Location: "+location);
+	var locOrder = (location == '') ? '>=' : '>';
+
+	// Build query using search terms
+	var select = `SELECT * FROM
+	(
+		SELECT *,
+		MATCH(title) AGAINST('${terms}') as relTitle,
+		MATCH(location) AGAINST('${location}') as relLocation,
+		MATCH(company) AGAINST('${terms}') as relCompany
+		FROM postings
+		where
+			MATCH(title, location, company)
+			AGAINST('${terms}${location}')
+		ORDER BY relTitle*1 + relLocation*1 + relCompany*1${sort} DESC
+	) as t 
+	where relTitle > 0 and relLocation ${locOrder} 0 and relCompany >= 0
+	and jobType like '%${type}%'
+	and experienceLevel like '%${experience}%'
+	limit ${offset}, 10;`
+	console.log(select);
+
+	var total = `SELECT Count(*) AS total FROM
+	(
+		SELECT *,
+		MATCH(title) AGAINST('${terms}') as relTitle,
+		MATCH(location) AGAINST('${location}') as relLocation,
+		MATCH(company) AGAINST('${terms}') as relCompany
+		FROM postings
+		where
+			MATCH(title, location, company)
+			AGAINST('${terms}${location}')
+		ORDER BY relTitle*1 + relLocation*1 + relCompany*1${sort} DESC
+	) as t 
+	where relTitle > 0 and relLocation ${locOrder} 0 and relCompany >= 0
+	and jobType like '%${type}%'
+	and experienceLevel like '%${experience}%';`
+	
+
+	pool.query(select + total , function(err, result) {
+		if (err) return callback(err);
+		callback(null, resultToObject(result));
+		
+	});
+	
+}
+
 /* Queries the database for job postings matching the provided search criteria.
  * If title, location, or company is passed as a blank string the query will not filter using that criteria.
  * This version requires distinct search fields.
@@ -180,10 +239,10 @@ function resultToObject(result) {
 	});
 	var resultObject = {
 		results: resultArray,
-		totalResults: result[1][0].total,
-		excludedType: result[2][0].exType,
-		excludedPay: result[3][0].exPay,
-		excludedExperience: result[4][0].exExperience
+		totalResults: result[1][0].total
+		//excludedType: result[2][0].exType,
+		//excludedPay: result[3][0].exPay,
+		//excludedExperience: result[4][0].exExperience
 	}
 	//console.log(resultObject);
 	return resultObject;
@@ -197,5 +256,6 @@ module.exports = {
 	getDate,
 	checkExists,
 	findLocation,
+	selectPostingAdvanced,
 	pool
 };

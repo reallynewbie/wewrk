@@ -33,9 +33,9 @@ app.get("/search", async (req, res) =>  {
 
     //TODO: implement multi-field search, currently assuming terms contains 'title%20location%20company' ('%20%20' for empty search bar)
     // Each field can be blank but spaces are needed, eg. 'location%20company' wont work but '%20location%20company' will
-    let title = terms[0];
+    //let title = terms[0];
     //let location = terms[1];
-    let company = terms[2];
+    //let company = terms[2];
     let pay = req.query.pay;// input from dropdown
     let type = req.query.type;// input from dropdown
     let experience = req.query.experience;
@@ -43,15 +43,15 @@ app.get("/search", async (req, res) =>  {
     let sort = req.query.sort;// {sort, relevance, undefined}
 
     // handle missing elements
-    title = (typeof title === 'undefined') ? '' : title;
+    //title = (typeof title === 'undefined') ? '' : title;
     location = (typeof location === 'undefined') ? '' : location;
-    company = (typeof company === 'undefined') ? '' : company;
+    //company = (typeof company === 'undefined') ? '' : company;
     pay = (typeof pay === 'undefined' || pay == '') ? 0 : pay;
     type = (typeof type === 'undefined') ? '' : type;
     experience = (typeof experience === 'undefined') ? '' : experience;
     sort = (typeof sort === 'undefined') ? 'relevance' : sort;
 
-    wrkDB.selectPosting(wrkDB.pool, title, location, company, pay, type, experience, sort, offset, function(err, resultObject) {
+    wrkDB.selectPostingAdvanced(wrkDB.pool, terms, location, pay, type, experience, sort, offset, function(err, resultObject) {
         if (err) console.log(err);
         res.send(JSON.stringify(resultObject))
     });
