@@ -1,16 +1,24 @@
 const fs = require("fs");
 let Crawler = require("crawler");
+const mysql = require('mysql');
+const dotenv = require('dotenv');
+dotenv.config();
+
+// Change connection info based on your mySQL setup
+var pool = mysql.createPool({
+	connectionLimit: 20,
+	host: "localhost",
+	user: "weWrkApp",
+	password: process.env.PASSWORD,
+	database: "wewrk",
+	multipleStatements: true
+});
 
 // DATABASE
 const wrkDB = require('./wrkDB.js');
 
 const provinces = ["british+columbia", "alberta", "saskatchewan", "manitoba", "ontario", "quebec+province", "New+Brunswick", "Prince+Edward+Island", "Nova+Scotia", "Newfoundland+and+Labrador", "Yukon", "Northwest+Territories", "Nunavut"];
-const jobTitle = "";
-const qualificationsRegEx = new RegExp("Qualifications|What are we looking for|What You Bring to the Role|Requirements.*?<ul>(.*?)<\/ul>", "g");
-// const qualificationsRegEx = new RegExp("Qualifications.*?<ul>(.*?)<\/ul>", "g");
-//<b>(Qualifications|What are we looking for|What You Bring to the Role|Requirements|Must Haves|Experience)(.*?)<b>
 
-//const fileStream = fs.createWriteStream(".\\logs\\jobs_" + curDate.toTimeString().slice(0, 8) + ".json");
 const fileStream = fs.createWriteStream(".\\logs\\jobs.json");
 
 let c = new Crawler({
@@ -18,7 +26,7 @@ let c = new Crawler({
 });
 provinces.forEach(function(location) {
     c.queue([{
-        uri: 'https://ca.indeed.com/jobs?q=' + encodeURI(jobTitle) + '&l=' + location + '&fromage=1&limit=50&start=0',
+        uri: 'https://ca.indeed.com/jobs?q=&l=' + location + '&fromage=1&limit=50&start=0',
         jQuery: true,
         callback: initSearchResults,
         location: location
@@ -49,7 +57,7 @@ function initSearchResults(error, res, done) {
         console.log("Total after limit: " + totalJobs);
         
         for (let index = 0; index < totalJobs; index = index + 50) {
-            pullJobDetails(`https://ca.indeed.com/jobs?q=${jobTitle}&l=${res.options.location}&fromage=1&limit=50&start=${index}`)
+            pullJobDetails(`https://ca.indeed.com/jobs?q=&l=${res.options.location}&fromage=1&limit=50&start=${index}`)
         }
     }
     done();
@@ -92,16 +100,15 @@ function createJobObject(jobTitle, jobLink) {
             } else {
                 console.log('\n--------\nGrabbed', res.body.length, 'bytes');
                 let $ = res.$;
+                console.log(typeof($));
+                if ($ == undefined) {
+                    done();
+                }
                 let jobDescription = $(".jobsearch-jobDescriptionText").first().html();
-                //let jobLocation = $(".jobsearch-JobMetadataHeader-iconLabel").first().text();
                 let jobLocation = $('div[class*="icl-IconFunctional--location"]').next().text();
-                console.log("Location: " + jobLocation);
                 let jobSalary = $('div[class*="icl-IconFunctional--salary"]').next().text();
-                console.log("Pay: " + jobSalary);
                 let jobType = $('div[class*="icl-IconFunctional--jobs"]').next().text();
-                console.log("Type: " + jobType);
                 let jobCompany = $('div[class*="InlineCompanyRating"]').first().children().first().text();
-                console.log("Company: " + jobCompany);
 
                 // Assign job attributes based on the page, experienceLevel is set in the database
                 let jobObject = JSON.stringify({
@@ -111,23 +118,14 @@ function createJobObject(jobTitle, jobLink) {
                     location: jobLocation,
                     company: jobCompany,
                     pay: jobSalary,
-                    jobType: jobType,
-                    regex: qualificationsRegEx.test(jobDescription),
-                    qual: qualificationsRegEx.exec(jobDescription)
+                    jobType: jobType
                 });
                 if (jobDescription) {
                     if (!jobLink.includes("/pagead/")) {
                         fileStream.write(jobObject + ",\n");
-                    wrkDB.insertPosting(wrkDB.pool, JSON.parse(jobObject));
-                    // if (!qualificationsRegEx.test(jobDescription)) {
-                    //     let jobObject = jobDescription;
-                    //     fileStream.write(jobObject + "\n-------------------------\n");
-                    // }
+                    wrkDB.insertPosting(pool, JSON.parse(jobObject));
                     }
-                //console.log(qualificationsRegEx.test(jobDescription)); 
                 }
-                
-                           
             }
             done();
         }

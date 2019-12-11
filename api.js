@@ -1,7 +1,20 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const mysql = require('mysql');
 const wrkDB = require("./wrkDB");
+const dotenv = require('dotenv');
+dotenv.config();
+
+// Change connection info based on your mySQL setup
+var pool = mysql.createPool({
+	connectionLimit: 20,
+	host: "localhost",
+	user: "weWrkApp",
+	password: process.env.APPPASSWORD,
+	database: "wewrk",
+	multipleStatements: true
+});
 
 const app = express();
 const portNum = 9001;
@@ -26,7 +39,7 @@ app.get("/search", async (req, res) =>  {
     // grab elements from query
     let terms = req.query.terms.split(' ');// input from search bar
     
-    wrkDB.findLocation(wrkDB.pool, terms, function(err, terms, location) {
+    wrkDB.findLocation(pool, terms, function(err, terms, location) {
         if (err) throw err;
         console.log(terms, location);
     
@@ -51,7 +64,7 @@ app.get("/search", async (req, res) =>  {
     experience = (typeof experience === 'undefined') ? '' : experience;
     sort = (typeof sort === 'undefined') ? 'relevance' : sort;
 
-    wrkDB.selectPostingAdvanced(wrkDB.pool, terms, location, pay, type, experience, sort, offset, function(err, resultObject) {
+    wrkDB.selectPostingAdvanced(pool, terms, location, pay, type, experience, sort, offset, function(err, resultObject) {
         if (err) console.log(err);
         res.send(JSON.stringify(resultObject))
     });
