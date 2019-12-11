@@ -36,8 +36,8 @@ app.get("/queryExample", (req, res) => {
 app.get("/search", async (req, res) =>  {
     console.log("Serving search");
 
-    // grab elements from query
-    let terms = req.query.terms.split(' ');// input from search bar
+    // grab and sanitize terms from query
+    let terms = req.query.terms.replace(/\0|\'|\"|%27|;|\b|\n|\r|\t|\Z|\\/g,'').split(' ');// input from search bar
     
     wrkDB.findLocation(pool, terms, function(err, terms, location) {
         if (err) throw err;

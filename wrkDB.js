@@ -28,9 +28,11 @@ function findLocation(pool, words, callback) {
 	console.log("Words: " + words);
 	var sql = '';
 	words.forEach(function(value, i) {
+		if (value != '') value = mysql.escape(value).replace(/'/g, "");
 		sql += "SELECT posting_id FROM postings WHERE location LIKE '%" + value + "%' LIMIT 1;"
 		console.log(i + value);
 	});
+	console.log("RAW: " + sql);
 	pool.query(sql, function(err, result) {
 		if (err) return callback(err);
 		var terms = [];
@@ -79,7 +81,7 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 	if (experience != '') experience = mysql.escape(experience).replace(/'/g, "");
 	if (sort === 'relevance') sort = "";
 	if (sort === 'date') sort = ", date"
-	terms = terms.join(" ")
+	terms = terms.join(" ");
 	console.log(terms);
 	console.log("Location: "+location);
 	var locOrder = (location == '') ? '>=' : '>';
