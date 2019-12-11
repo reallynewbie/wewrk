@@ -62,7 +62,12 @@ export default {
         { value: "permanent", text: "Permanent" },
         { value: "contract", text: "Contract" },
         { value: "temporary", text: "Temporary" },
-        { value: "freelance", text: "Freelance" }
+        { value: "freelance", text: "Freelance" },
+        { value: "casual", text: "Casual"},
+        { value: "commission", text: "Commission" },
+        { value: "apprenticeship", text: "Apprenticeship" },
+        { value: "Fly-In/Fly-Out", text: "Fly-In/Fly-Out" },
+        { value: "Internship", text: "Internship" },
         /* DB Has the following
           'Casual'
           'Part-time'
@@ -90,10 +95,11 @@ export default {
       salarySelected: null,
       salaryOptions: [
         { value: null, text: "- Select -" },
-        { value: "0", text: "$50,000+", disabled: true },
-        { value: "1", text: "$70,000+", disabled: true },
-        { value: "2", text: "$90,000+", disabled: true },
-        { value: "3", text: "$110,000+", disabled: true }
+        { value: "30000", text: "$30,000+" },
+        { value: "50000", text: "$50,000+"},
+        { value: "70000", text: "$70,000+"},
+        { value: "90000", text: "$90,000+"},
+        { value: "110000", text: "$110,000+"}
       ],
       distanceSelected: null,
       distanceOptions: [

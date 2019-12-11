@@ -22,27 +22,27 @@ export default {
       recentSearches: [
         {
           id: 0,
-          value: "Developer, Stet Solutions"
+          value: "cashier walmart"
         },
         {
           id: 1,
-          value: "Developer, Edmonton, AB"
+          value: "Cashier Walmart Edmonton"
         },
         {
           id: 2,
-          value: "Front-End Developer"
+          value: "tester"
         },
         {
           id: 3,
-          value: "Web Designer"
+          value: "Designer"
         },
         {
           id: 4,
-          value: "Software Developer"
+          value: "Developer"
         },
         {
           id: 5,
-          value: "Jobber"
+          value: "Edmonton"
         }
       ]
     };
