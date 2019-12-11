@@ -33,7 +33,7 @@
       </b-col>
       <b-col>
         <h1 class="formHeader">Distance</h1>
-        <b-form-select plain v-model="salarySelected" :options="salaryOptions" class="customSelect"></b-form-select>
+        <b-form-select plain v-model="distanceSelected" :options="distanceOptions" class="customSelect"></b-form-select>
         <font-awesome-icon icon="sort-down" size="lg" />
       </b-col>
       <b-col>
