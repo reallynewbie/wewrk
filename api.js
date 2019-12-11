@@ -1,3 +1,5 @@
+// weWrk API Backend
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -10,8 +12,8 @@ dotenv.config();
 var pool = mysql.createPool({
 	connectionLimit: 20,
 	host: "localhost",
-	user: "weWrkApp",
-	password: process.env.APPPASSWORD,
+	user: "weWrkApp",// the api account only has SELECT access to the postings table
+	password: process.env.APPPASSWORD,// passwords are defined in a .env file located in the root directory
 	database: "wewrk",
 	multipleStatements: true
 });
@@ -21,53 +23,41 @@ const portNum = 9001;
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/example", (req, res) =>{ // Missing Async here because we won't have to wait.
-    res.send(JSON.stringify({ // Stringify converts a JavaScript Object, into a string which I can run JSON.parse to get back an object
-        testValue: "hello",
-        someCounter: 123
-    }))
-})
-
-app.get("/queryExample", (req, res) => {
-    let testQuery = req.query.test;
-    res.send("Hello, I received " + testQuery);  // Sending back a string, so no need to use stringify since I'm not sending an object
-})
-
+/* API endpoint for all search functions
+ * Recieves a query from the frontend in the format: ?q={search terms}&pay={minimum salary}&type={job type}&experience={experience level}&sort={sort priority}&offset={page offset}
+ * All fields can be left blank and will either be unused in the search or set to a default value
+ */
 app.get("/search", async (req, res) =>  {
     console.log("Serving search");
 
-    // grab and sanitize terms from query
+    // grab and sanitize terms from query, splitting into an array at spaces
     let terms = req.query.terms.replace(/[!@#$\^&*()\-\_=+;<>,.\'\"]|\%(?!20)\d\d/g,'').split(' ');// input from search bar
 
+    //check if any terms match locations in our database, this splits search input into location(array of strings) and terms(string)
+    //eg "cashier edmonton walmart" becomes ["cashier", "walmart"] and "edmonton"
     wrkDB.findLocation(pool, terms, function(err, terms, location) {
         if (err) throw err;
         console.log(terms, location);
     
+        let pay = req.query.pay;// input from dropdown, minimum salary threshold for search
+        let type = req.query.type;// input from dropdown, job type eg. full-time, part-time
+        let experience = req.query.experience;//input from dropdown, experience level required
+        let offset = req.query.offset;// determined by frontend, page offset to allow for infinite scrolling, multiple of 10
+        let sort = req.query.sort;// input from dropdown, sorting method, can be 'date' or 'relevance'
 
-    //TODO: implement multi-field search, currently assuming terms contains 'title%20location%20company' ('%20%20' for empty search bar)
-    // Each field can be blank but spaces are needed, eg. 'location%20company' wont work but '%20location%20company' will
-    //let title = terms[0];
-    //let location = terms[1];
-    //let company = terms[2];
-    let pay = req.query.pay;// input from dropdown
-    let type = req.query.type;// input from dropdown
-    let experience = req.query.experience;
-    let offset = req.query.offset;// determined by frontend
-    let sort = req.query.sort;// {sort, relevance, undefined}
+        // set missing search elements to default value
+        location = (typeof location === 'undefined') ? '' : location;
+        pay = (typeof pay === 'undefined' || pay == '') ? 0 : pay;
+        type = (typeof type === 'undefined') ? '' : type;
+        experience = (typeof experience === 'undefined') ? '' : experience;
+        sort = (typeof sort === 'undefined') ? 'relevance' : sort;
 
-    // handle missing elements
-    //title = (typeof title === 'undefined') ? '' : title;
-    location = (typeof location === 'undefined') ? '' : location;
-    //company = (typeof company === 'undefined') ? '' : company;
-    pay = (typeof pay === 'undefined' || pay == '') ? 0 : pay;
-    type = (typeof type === 'undefined') ? '' : type;
-    experience = (typeof experience === 'undefined') ? '' : experience;
-    sort = (typeof sort === 'undefined') ? 'relevance' : sort;
-
-    wrkDB.selectPostingAdvanced(pool, terms, location, pay, type, experience, sort, offset, function(err, resultObject) {
-        if (err) console.log(err);
-        res.send(JSON.stringify(resultObject))
-    });
+        // search the database using the query attributes
+        wrkDB.selectPostingAdvanced(pool, terms, location, pay, type, experience, sort, offset, function(err, resultObject) {
+            if (err) console.log(err);
+            // send SELECT results to frontend
+            res.send(JSON.stringify(resultObject))
+        });
     });
 })
 

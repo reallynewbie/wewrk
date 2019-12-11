@@ -4,7 +4,8 @@ const mysql = require('mysql');
 
 
 
-/* Gets the current date, formatted as yyyy/mm/dd
+/* Gets yesterday's date, formatted as yyyy/mm/dd
+ * Used when inserting jobs into the database
  */
 function getDate(){
 	var date = new Date();
@@ -15,41 +16,32 @@ function getDate(){
 	return date;
 }
 
-function checkExists(pool, word, callback) {
-	word = mysql.escape(word).replace(/'/g, "");
-	var sql = "SELECT posting_id FROM postings WHERE location LIKE '%" + word + "%' LIMIT 1"
-	pool.query(sql, function(err, result) {
-		if (err) return callback(err);
-		callback(null, result.length);
-	});
-}
-
+/* Given an array of words from a user search, check if any match a location in the database and separate them
+ * Returns an array with all non location terms and a string the search location
+ */
 function findLocation(pool, words, callback) {
 	console.log("Words: " + words);
 	var sql = '';
+
+	// build a query for each search term against the location column, only looking for a single match
 	words.forEach(function(value, i) {
 		sql += "SELECT posting_id FROM postings WHERE location LIKE '%" + value + "%' LIMIT 1;"
-		console.log(i + value);
 	});
-	console.log("RAW: " + sql);
 	pool.query(sql, function(err, result) {
 		if (err) return callback(err);
 		var terms = [];
 		var location;
+		// for each word, check if any rows were returned matching the term to a location
 		result.forEach(function(value, i) {
-			console.log("Value: " + value + "Length: " + value.length);
-			if (value.length == 0) {
-				console.log("false" + i + value);
+			if (value.length == 0) {// no match, not a location, push to terms
 				terms.push(words[i]);
 			}
-			else if (value.length == 1) {
-				console.log("true" + i + value);
+			else if (value.length == 1) {// 1 match, is a location, set location
 				location = words[i];
 			}
 		});
 		callback(null, terms, location);
 	})
-	console.log(sql);
 }
 
 /* Inserts a jobObject into the mySql database, printing the insertID if successful
@@ -70,7 +62,9 @@ function insertPosting(pool, jobObject) {
 	    });
     }
 
-
+/* Constructs and executes sql queries based on the provided search criteria
+ * Returns a formatted object containing a page(10 jobs) of results
+ */
 function selectPostingAdvanced(pool, terms, location, pay, type, experience, sort, offset, callback) {
 
 	// Escape search terms if not blank
@@ -78,15 +72,23 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 	if (pay != '') pay = mysql.escape(pay).replace(/'/g, "");
 	if (type != '') type = mysql.escape(type).replace(/'/g, "");
 	if (experience != '') experience = mysql.escape(experience).replace(/'/g, "");
+	// define sort method
 	if (sort === 'relevance') sort = "";
 	if (sort === 'date') sort = ", date"
+	// place non location search terms in space delimited string
 	terms = terms.join(" ");
-	console.log(terms);
-	console.log("Location: "+location);
+
+	/* Relevance sorting is done using mysql's full text indexing and natural language processing mode of MATCH/AGINST
+	 * Weighted scores are generated based on matching search terms to the location, title, and company columns
+	 * A score higher than 0 indicates at least one match, with higher scores being more relevant
+	 */
+	// for relevance sorting, if a location is defined results must have a location match (relLocation > 0)
 	var locOrder = (location == '') ? '>=' : '>';
+	// for relevance sorting, if non location terms are defined title must have a match (relTitle > 0)
 	var titleOrder = (terms == '') ? '>=' : '>';
 
 	// Build query using search terms
+	// This query is used for non-empty searches where the user has entered something, and returns up to 10 jobs from the current page
 	var select = `SELECT * FROM
 	(
 		SELECT *,
@@ -105,6 +107,7 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 	AND sortPay >= ${pay}
 	limit ${offset}, 10;`
 
+	// This query gathers the total number of jobs matching a non-empty search
 	var total = `SELECT Count(*) AS total FROM
 	(
 		SELECT *,
@@ -115,13 +118,13 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 		where
 			MATCH(title, location, company)
 			AGAINST('${terms} ${location}')
-		ORDER BY relTitle*1 + relLocation*1 + relCompany*1${sort} DESC
 	) as t 
 	where relTitle ${titleOrder} 0 AND relLocation ${locOrder} 0 AND relCompany >= 0
 	AND jobType LIKE '%${type}%'
 	AND experienceLevel LIKE '%${experience}%'
 	AND sortPay >= ${pay};`
 	
+	// These alternate queries are used when the search bar is empty as the full text search is not needed
 	if (terms == '' && location == '') {
 		select = 
 		`SELECT * FROM postings
@@ -136,101 +139,15 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 		AND experienceLevel LIKE '%${experience}%'
 		AND sortPay >= ${pay};`
 	} 
-	console.log(select);
-	console.log("Total:"+total);
 
+	// Execute both queries
 	pool.query(select + total , function(err, result) {
 		if (err) return callback(err);
 		callback(null, resultToObject(result));
-		
 	});
-	
 }
 
-/* Queries the database for job postings matching the provided search criteria.
- * If title, location, or company is passed as a blank string the query will not filter using that criteria.
- * This version requires distinct search fields.
- * Callback result is an array containing the returned rows
- */
-function selectPosting(pool, title, location, company, pay, type, experience, sort, offset, callback) {
-
-	// Escape search terms if not blank
-	if (title != '') title = mysql.escape(title).replace(/'/g, "");
-	if (location != '') location = mysql.escape(location).replace(/'/g, "");
-	if (company != '') company = mysql.escape(company).replace(/'/g, "");
-	if (pay != '') pay = mysql.escape(pay).replace(/'/g, "");
-	if (type != '') type = mysql.escape(type).replace(/'/g, "");
-	if (experience != '') experience = mysql.escape(experience).replace(/'/g, "");
-	if (sort === 'relevance') sort = "relTitle*1 + relLocation*1 + relCompany*1";
-
-	// Build query using search terms
-	var select = "SELECT * FROM postings WHERE title LIKE '%" + title +
-	 "%' AND location LIKE '%" + location +
-	 "%' AND company LIKE '%" + company +
-	 "%' AND pay >= " + pay +
-	 " AND jobType LIKE '%" + type +
-	 "%' AND experienceLevel LIKE '%" + experience +
-	 "%' ORDER BY " + sort +
-	 " DESC LIMIT " + offset + ", 10;"; 
-	
-	// Count total results before limit
-	var total = "SELECT COUNT(*) AS total FROM postings WHERE title LIKE '%" + title +
-	"%' AND location LIKE '%" + location +
-	"%' AND company LIKE '%" + company +
-	"%' AND pay >= " + pay +
-	" AND jobType LIKE '%" + type +
-	"%' AND experienceLevel LIKE '%" + experience +
-	"%';";
-
-	// Count jobs excluded due to missing attributes
-	var exType = "SELECT COUNT(*) AS exType FROM postings WHERE title LIKE '%" + title +
-	"%' AND location LIKE '%" + location +
-	"%' AND company LIKE '%" + company +
-	"%' AND pay >= " + pay +
-	" AND jobType LIKE '" +
-	"' AND experienceLevel LIKE '%" + experience +
-	"%';";
-	var exPay = "SELECT COUNT(*) AS exPay FROM postings WHERE title LIKE '%" + title +
-	"%' AND location LIKE '%" + location +
-	"%' AND company LIKE '%" + company +
-	"%' AND pay LIKE '" +
-	"' AND jobType LIKE '%" + type +
-	"%' AND experienceLevel LIKE '%" + experience +
-	"%';";
-	var exExperience = "SELECT COUNT(*) AS exExperience FROM postings WHERE title LIKE '%" + title +
-	"%' AND location LIKE '%" + location +
-	"%' AND company LIKE '%" + company +
-	"%' AND pay >= " + pay +
-	" AND jobType LIKE '%" + type +
-	"%' AND experienceLevel LIKE '" +
-	"';";
-
-	// Execute 5 queries, result of query n = result[n]
-	pool.query(select + total + exType + exPay + exExperience, function(err, result) {
-		if (err) return callback(err);
-		callback(null, resultToObject(result));
-		
-	});
-	
-}
-
-/*
-{
-      jobID: 1234, (some ID number to be able to identify the job posting)
-      jobTitle: "Frontend web application developer",
-      companyName: "Test Company",
-      location: "Edmonton, AB",
-      entryLevel: "Junior Entry Level",
-      jobType: "Full Time",
-      salary: "$27.75/hr",
-      postedDate: "10/29/2019",
-      closingDate: "11/30/2019",
-      jobDescription: "HTML HERE",
-      applicationLink: "Insert link to the apply button here"
-}
- */
-
-/* Converts the result of a mySQL query into an object
+/* Converts the result of a mySQL SELECT query into an object to be passed to the frontend
  */
 function resultToObject(result) {
 	var resultArray = [];
@@ -249,12 +166,10 @@ function resultToObject(result) {
 		}
 		resultArray.push(job);
 	});
+	// final object contains an array of all selected jobs and the number of jobs selected
 	var resultObject = {
 		results: resultArray,
 		totalResults: result[1][0].total
-		//excludedType: result[2][0].exType,
-		//excludedPay: result[3][0].exPay,
-		//excludedExperience: result[4][0].exExperience
 	}
 	//console.log(resultObject);
 	return resultObject;
@@ -266,7 +181,6 @@ module.exports = {
 	selectPosting,
 	resultToObject,
 	getDate,
-	checkExists,
 	findLocation,
 	selectPostingAdvanced,
 };
