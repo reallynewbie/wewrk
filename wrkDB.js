@@ -28,7 +28,6 @@ function findLocation(pool, words, callback) {
 	console.log("Words: " + words);
 	var sql = '';
 	words.forEach(function(value, i) {
-		if (value != '') value = mysql.escape(value).replace(/'/g, "");
 		sql += "SELECT posting_id FROM postings WHERE location LIKE '%" + value + "%' LIMIT 1;"
 		console.log(i + value);
 	});
