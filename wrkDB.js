@@ -107,9 +107,10 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 			AGAINST('${terms} ${location}')
 		ORDER BY relTitle*1 + relLocation*1 + relCompany*1${sort} DESC
 	) as t 
-	where relTitle ${titleOrder} 0 and relLocation ${locOrder} 0 and relCompany >= 0
-	and jobType like '%${type}%'
-	and experienceLevel like '%${experience}%'
+	where relTitle ${titleOrder} 0 AND relLocation ${locOrder} 0 AND relCompany >= 0
+	AND jobType LIKE '%${type}%'
+	AND experienceLevel LIKE '%${experience}%'
+	AND sortPay >= ${pay}
 	limit ${offset}, 10;`
 
 	var total = `SELECT Count(*) AS total FROM
@@ -124,21 +125,24 @@ function selectPostingAdvanced(pool, terms, location, pay, type, experience, sor
 			AGAINST('${terms} ${location}')
 		ORDER BY relTitle*1 + relLocation*1 + relCompany*1${sort} DESC
 	) as t 
-	where relTitle ${titleOrder} 0 and relLocation ${locOrder} 0 and relCompany >= 0
-	and jobType like '%${type}%'
-	and experienceLevel like '%${experience}%';`
+	where relTitle ${titleOrder} 0 AND relLocation ${locOrder} 0 AND relCompany >= 0
+	AND jobType LIKE '%${type}%'
+	AND experienceLevel LIKE '%${experience}%'
+	AND sortPay >= ${pay};`
 	
 	if (terms == '' && location == '') {
 		select = 
 		`SELECT * FROM postings
-		WHERE jobType like '%${type}%'
-		and experienceLevel like '%${experience}%'
+		WHERE jobType LIKE '%${type}%'
+		AND experienceLevel LIKE '%${experience}%'
+		AND sortPay >= ${pay}
 		ORDER BY date DESC
 		LIMIT ${offset}, 10;`
 		total = 
 		`SELECT COUNT (*) AS total FROM postings
-		WHERE jobType like '%${type}%'
-		and experienceLevel like '%${experience}%';`
+		WHERE jobType LIKE '%${type}%'
+		AND experienceLevel LIKE '%${experience}%'
+		AND sortPay >= ${pay};`
 	} 
 	console.log(select);
 	console.log("Total:"+total);
